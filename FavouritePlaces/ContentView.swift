@@ -26,7 +26,7 @@ struct ContentView: View {
 //                        Text(item.timestamp!, formatter: itemFormatter)
 //                    }
                 }
-//                .onDelete(perform: deleteItems)
+                .onDelete(perform: deletePlaces)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -35,7 +35,7 @@ struct ContentView: View {
                 ToolbarItem(placement:
                 .navigationBarTrailing) {
                     Button {
-                        print("hello")
+                        addPlace()
                     } label: {
                         Label("Add Item", systemImage: "plus")
                     }
@@ -45,36 +45,38 @@ struct ContentView: View {
         }
     }
 
-//    private func addItem() {
-//        withAnimation {
-//            let newItem = Item(context: viewContext)
-//            newItem.timestamp = Date()
-//
-//            do {
-//                try viewContext.save()
-//            } catch {
-//                // Replace this implementation with code to handle the error appropriately.
-//                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-//                let nsError = error as NSError
-//                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-//            }
-//        }
-//    }
+    private func addPlace() {
+        withAnimation {
+            let newPlace = Place(context: viewContext)
+            newPlace.name = "New Place"
+            newPlace.location = ""
+            newPlace.image = ""
 
-//    private func deleteItems(offsets: IndexSet) {
-//        withAnimation {
-//            offsets.map { items[$0] }.forEach(viewContext.delete)
-//
-//            do {
-//                try viewContext.save()
-//            } catch {
-//                // Replace this implementation with code to handle the error appropriately.
-//                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-//                let nsError = error as NSError
-//                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-//            }
-//        }
-//    }
+            do {
+                try viewContext.save()
+            } catch {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+        }
+    }
+
+    private func deletePlaces(offsets: IndexSet) {
+        withAnimation {
+            offsets.map { places[$0] }.forEach(viewContext.delete)
+
+            do {
+                try viewContext.save()
+            } catch {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+        }
+    }
 }
 
 //private let itemFormatter: DateFormatter = {
