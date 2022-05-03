@@ -18,11 +18,9 @@ struct MasterView: View {
     var body: some View {
         List {
             ForEach(places) { place in
-//                    NavigationLink {
-                Text(place.name ?? "")
-//                    } label: {
-//                        Text(item.timestamp!, formatter: itemFormatter)
-//                    }
+                NavigationLink(destination: DetailView()) {
+                    Text(place.name ?? "")
+                }
             }
             .onDelete(perform: deletePlaces)
         }
