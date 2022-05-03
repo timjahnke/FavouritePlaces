@@ -18,16 +18,7 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
-            List {
-                ForEach(places) { place in
-//                    NavigationLink {
-                    Text(place.name ?? "")
-//                    } label: {
-//                        Text(item.timestamp!, formatter: itemFormatter)
-//                    }
-                }
-                .onDelete(perform: deletePlaces)
-            }
+            MasterView()
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     EditButton()
@@ -41,12 +32,13 @@ struct ContentView: View {
                     }
                 }
             }
-//            Text("Select an item")
         }
     }
-
+    
+    // To Add a new place to the list
     private func addPlace() {
         withAnimation {
+            // Add to environment variable view context with initial values
             let newPlace = Place(context: viewContext)
             newPlace.name = "New Place"
             newPlace.location = ""
@@ -62,29 +54,7 @@ struct ContentView: View {
             }
         }
     }
-
-    private func deletePlaces(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { places[$0] }.forEach(viewContext.delete)
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-        }
-    }
 }
-
-//private let itemFormatter: DateFormatter = {
-//    let formatter = DateFormatter()
-//    formatter.dateStyle = .short
-//    formatter.timeStyle = .medium
-//    return formatter
-//}()
 
 //struct ContentView_Previews: PreviewProvider {
 //    static var previews: some View {
