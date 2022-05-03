@@ -19,7 +19,12 @@ struct MasterView: View {
         List {
             ForEach(places) { place in
                 NavigationLink(destination: DetailView()) {
-                    Text(place.name ?? "")
+                    HStack {
+                        Image(systemName: "location.square").foregroundColor(.green)
+                        Text(place.name ?? "")
+                        Text(place.location ?? "")
+                    }
+                   
                 }
             }
             .onDelete(perform: deletePlaces)

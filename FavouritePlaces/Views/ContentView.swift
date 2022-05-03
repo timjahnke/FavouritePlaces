@@ -34,6 +34,7 @@ struct ContentView: View {
                 }
             }
         }
+        .navigationViewStyle(.stack)
     }
     
     // To Add a new place to the list
@@ -42,7 +43,7 @@ struct ContentView: View {
             // Add to environment variable view context with initial values
             let newPlace = Place(context: viewContext)
             newPlace.name = "New Place"
-            newPlace.location = ""
+            newPlace.location = "Location"
             newPlace.image = ""
 
             do {
