@@ -2,17 +2,17 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E230" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Notes" representedClassName="Notes" parentEntity="Place" syncable="YES" codeGenerationType="class">
         <attribute name="text" optional="YES" attributeType="String"/>
-        <relationship name="onePlace" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Place" inverseName="manyNotes" inverseEntity="Place"/>
     </entity>
     <entity name="Place" representedClassName="Place" syncable="YES" codeGenerationType="class">
+        <attribute name="details" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="image" optional="YES" attributeType="String"/>
-        <attribute name="location" optional="YES" attributeType="String"/>
-        <attribute name="name" attributeType="String" defaultValueString=""/>
-        <relationship name="manyNotes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Notes" inverseName="onePlace" inverseEntity="Notes"/>
+        <attribute name="latitude" optional="YES" attributeType="String"/>
+        <attribute name="longitude" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String" defaultValueString=""/>
     </entity>
     <elements>
-        <element name="Place" positionX="465.9234619140625" positionY="-479.5432739257812" width="128" height="14"/>
-        <element name="Notes" positionX="292.3240356445312" positionY="-361.844482421875" width="128" height="14"/>
+        <element name="Place" positionX="465.9234619140625" positionY="-479.5432739257812" width="128" height="119"/>
+        <element name="Notes" positionX="292.3240356445312" positionY="-361.844482421875" width="128" height="44"/>
     </elements>
 </model>

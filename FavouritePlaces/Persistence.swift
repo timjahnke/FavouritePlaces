@@ -16,8 +16,10 @@ struct PersistenceController {
         for _ in 0..<10 {
             let newPlace = Place(context: viewContext)
             newPlace.id = UUID()
-            newPlace.name = ""
-            newPlace.location = ""
+            newPlace.title = "" 
+            newPlace.details = ""
+            newPlace.latitude = ""
+            newPlace.longitude = ""
             newPlace.image = ""
         }
         do {

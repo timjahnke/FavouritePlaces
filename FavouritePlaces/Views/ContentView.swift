@@ -42,8 +42,10 @@ struct ContentView: View {
         withAnimation {
             // Add to environment variable view context with initial values
             let newPlace = Place(context: viewContext)
-            newPlace.name = "New Place"
-            newPlace.location = "Location"
+            newPlace.title = "New Place"
+            newPlace.details = "Add some details"
+            newPlace.latitude = "0.0"
+            newPlace.longitude = "0.0"
             newPlace.image = ""
 
             do {
