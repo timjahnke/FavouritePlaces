@@ -50,6 +50,7 @@ struct MasterView: View {
         withAnimation {
             // Add to environment variable view context with initial values
             let newPlace = Place(context: viewContext)
+            newPlace.id = UUID()
             newPlace.title = "New Place"
             newPlace.details = ""
             newPlace.latitude = "0.0"
