@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct MasterView: View {
+    // Environmental variable for using functions for adding/ deleting from context.
     @Environment(\.managedObjectContext) private var viewContext
-
+    
+    // Fetch request from Database using class entity.
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Place.id, ascending: true)],
         animation: .default)
@@ -27,6 +29,7 @@ struct MasterView: View {
             }
             .onDelete(perform: deletePlaces)
         }
+        // Set a toolbar with a leading edit button and trailing plus button.
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 EditButton()
@@ -54,6 +57,7 @@ struct MasterView: View {
             newPlace.image = ""
 
             do {
+                // Attempt to save to view context otherwise throw an error
                 try viewContext.save()
             } catch {
                 // Replace this implementation with code to handle the error appropriately.
@@ -71,6 +75,7 @@ struct MasterView: View {
             offsets.map { places[$0] }.forEach(viewContext.delete)
 
             do {
+                // Attempt to save to view context otherwise throw an error
                 try viewContext.save()
             } catch {
                 // Replace this implementation with code to handle the error appropriately.

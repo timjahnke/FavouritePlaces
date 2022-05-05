@@ -9,8 +9,9 @@ import Foundation
 import CoreData
 import SwiftUI
 
+// Extends the existing Class Place from the CoreData database.
 extension Place {
-    // Non-optional ViewModel properties
+    // Sets optional properties to non-optional ViewModel properties
     var placeTitle: String {
         get { title ?? "" }
         set { title = newValue}

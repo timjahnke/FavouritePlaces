@@ -8,13 +8,16 @@
 import SwiftUI
 
 struct DetailView: View {
+    // Environmental variables for saving to view context and edit mode.
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.editMode) var editMode
+    
+    // Observe the Class \Place from CoreData
     @ObservedObject var place: Place
     var imageURL: String = "https://www.planetware.com/photos-large/AUS/australia-brisbane-city-2.jpg"
     
     var body: some View {
-        // If Edit Mode is active
+        // If Edit Mode is active, create a list and render plain text with Class Place data
         if(editMode?.wrappedValue == .inactive) {
             List {
                 Section(header:
@@ -22,6 +25,8 @@ struct DetailView: View {
                     .foregroundColor(.black)
                     .font(.system(size: 30))
                     .fontWeight(.bold)) {}
+                // Default string is "". If string length is greater than 0, render image
+                // Else render system image default.
                 if(place.placeImage.count > 0) {
                         ImageView(place: place)
                     } else {
@@ -40,6 +45,7 @@ struct DetailView: View {
                         }
                     }
                 }
+            // Create a toolbar edit button trailing.
             .toolbar {
                 ToolbarItem(placement:
                 .navigationBarTrailing) {
@@ -47,7 +53,8 @@ struct DetailView: View {
                 }
             }
         }
-        // If Edit Mode Is Active
+        // If Edit Mode Is Active, create a list and render editable Text fields
+        // Saves results to context to update Class Place 
         else if(editMode?.wrappedValue == .active) {
             List {
                 TextField("Edit title", text: $place.placeTitle, onCommit: {
@@ -76,6 +83,7 @@ struct DetailView: View {
                     catch{ fatalError()}
                 })
             }
+            // Create a toolbar edit button trailing.
             .toolbar {
                 ToolbarItem(placement:
                 .navigationBarTrailing) {

@@ -9,9 +9,9 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-
     var body: some View {
+        // Create a navigation view that uses the master view component.
+        // Also add a navigation title and view style to remove console errors. 
         NavigationView {
             MasterView()
             .navigationTitle("Favourite Places")
