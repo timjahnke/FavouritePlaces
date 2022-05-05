@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E230" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Notes" representedClassName="Notes" parentEntity="Place" syncable="YES" codeGenerationType="class">
-        <attribute name="text" optional="YES" attributeType="String"/>
-    </entity>
     <entity name="Place" representedClassName="Place" syncable="YES" codeGenerationType="class">
         <attribute name="details" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
@@ -12,7 +9,6 @@
         <attribute name="title" optional="YES" attributeType="String" defaultValueString=""/>
     </entity>
     <elements>
-        <element name="Place" positionX="465.9234619140625" positionY="-479.5432739257812" width="128" height="119"/>
-        <element name="Notes" positionX="292.3240356445312" positionY="-361.844482421875" width="128" height="44"/>
+        <element name="Place" positionX="151.5878295898438" positionY="-628.6495666503906" width="128" height="133"/>
     </elements>
 </model>

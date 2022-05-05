@@ -27,8 +27,42 @@ struct MasterView: View {
             }
             .onDelete(perform: deletePlaces)
         }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                EditButton()
+            }
+            ToolbarItem(placement:
+            .navigationBarTrailing) {
+                Button {
+                    addPlace()
+                } label: {
+                    Label("Add Item", systemImage: "plus")
+                }
+            }
+        }
     }
 
+    // To Add a new place to the list
+    private func addPlace() {
+        withAnimation {
+            // Add to environment variable view context with initial values
+            let newPlace = Place(context: viewContext)
+            newPlace.title = "New Place"
+            newPlace.details = ""
+            newPlace.latitude = "0.0"
+            newPlace.longitude = "0.0"
+            newPlace.image = ""
+
+            do {
+                try viewContext.save()
+            } catch {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+        }
+    }
  
     // Delete places from the list.
     private func deletePlaces(offsets: IndexSet) {

@@ -11,6 +11,7 @@ struct DetailView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.editMode) var editMode
     @ObservedObject var place: Place
+    var imageURL: String = "https://www.planetware.com/photos-large/AUS/australia-brisbane-city-2.jpg"
     
     var body: some View {
         // If Edit Mode is active
@@ -21,8 +22,9 @@ struct DetailView: View {
                     .foregroundColor(.black)
                     .font(.system(size: 30))
                     .fontWeight(.bold)) {}
-               
-                    HStack{
+                if(place.placeImage.count > 0) {
+                        ImageView(place: place)
+                    } else {
                         Image(systemName: "location.square").foregroundColor(.green)
                     }
                     Text(place.placeDetails)
