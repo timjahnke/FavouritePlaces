@@ -30,9 +30,16 @@ struct DetailView: View {
                 if(place.placeUrl.contains("https://www"))  {
                         Detail_ImageView(place: place)
                     } else {
-                        Image(systemName: "location.square").foregroundColor(.green)
+                        HStack {
+                            Image(systemName: "location.square").foregroundColor(.green)
+                            Text("Add a place")
+                        }
                     }
-                    Text(place.placeDetails)
+                    HStack {
+                        Text("Details: ")
+                        Text(place.placeDetails)
+                    }
+                   
                     VStack {
                         HStack{
                             Text("Latitude:")

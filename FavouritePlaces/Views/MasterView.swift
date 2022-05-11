@@ -29,7 +29,7 @@ struct MasterView: View {
                     }
                     else {
                         HStack {
-                          Image(systemName: "location.square").foregroundColor(.green)
+                          Image(systemName: "location.square").foregroundColor(.green).frame(width: 40, height: 40);
                           Text(place.placeTitle)
                       }
                     }

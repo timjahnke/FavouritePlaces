@@ -28,6 +28,7 @@ struct Master_ImageView: View {
             Image(uiImage: image)
                 .resizable()
                 .scaledToFit()
+                .frame(width: 40, height: 40);
     }
 }
 
