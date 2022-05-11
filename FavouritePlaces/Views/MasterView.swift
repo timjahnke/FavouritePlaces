@@ -22,9 +22,15 @@ struct MasterView: View {
             ForEach(places) { place in
                 NavigationLink(destination: DetailView(place: place)) {
                     HStack {
-                        if(place.placeUrl.contains("https://www"))  {
+                        // If place url starts with https:// and ends with .jpg or .png render.
+                        if(
+                            (place.placeUrl.hasPrefix("https://") && place.placeUrl.hasSuffix(".jpg")) ||
+                            (place.placeUrl.hasPrefix("https://") && place.placeUrl.hasSuffix(".png"))
+                            )
+                        {
                             Master_ImageView(place: place)
                         }
+                        // Else render system image default. Default string is "". 
                         else {
                             Image(systemName: "location.square").foregroundColor(.green).frame(width: 40, height: 40);
                         }
