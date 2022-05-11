@@ -14,7 +14,6 @@ struct DetailView: View {
     
     // Observe the Class \Place from CoreData
     @ObservedObject var place: Place
-    var imageURL: String = "https://www.planetware.com/photos-large/AUS/australia-brisbane-city-2.jpg"
     
     var body: some View {
         // If Edit Mode is active, create a list and render plain text with Class Place data
@@ -30,16 +29,16 @@ struct DetailView: View {
                 if(place.placeUrl.contains("https://www"))  {
                         Detail_ImageView(place: place)
                     } else {
-                        HStack {
-                            Image(systemName: "location.square").foregroundColor(.green)
-                            Text("Add a place")
+                        Image(systemName: "location.square").foregroundColor(.green)
+                    }
+                    // Check if details is empty. Will display default text if empty.
+                    HStack {
+                        if(place.placeDetails.count > 0) {
+                            Text(place.placeDetails)
+                        } else {
+                            Text("Details: ")
                         }
                     }
-                    HStack {
-                        Text("Details: ")
-                        Text(place.placeDetails)
-                    }
-                   
                     VStack {
                         HStack{
                             Text("Latitude:")
