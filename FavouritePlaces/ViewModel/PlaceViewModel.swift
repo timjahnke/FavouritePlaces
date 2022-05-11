@@ -7,7 +7,6 @@
 
 import Foundation
 import CoreData
-import SwiftUI
 
 // Extends the existing Class Place from the CoreData database.
 extension Place {

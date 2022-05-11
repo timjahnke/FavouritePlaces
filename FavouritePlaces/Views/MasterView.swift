@@ -13,7 +13,7 @@ struct MasterView: View {
     
     // Fetch request from Database using class entity.
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Place.id, ascending: true)],
+        sortDescriptors: [NSSortDescriptor(keyPath: \Place.timestamp, ascending: true)],
         animation: .default)
     private var places: FetchedResults<Place>
 
@@ -21,18 +21,16 @@ struct MasterView: View {
         List {
             ForEach(places) { place in
                 NavigationLink(destination: DetailView(place: place)) {
-                    if(place.placeUrl.contains("https://www"))  {
-                        HStack {
+                    HStack {
+                        if(place.placeUrl.contains("https://www"))  {
                             Master_ImageView(place: place)
-                            Text(place.placeTitle)
                         }
+                        else {
+                            Image(systemName: "location.square").foregroundColor(.green).frame(width: 40, height: 40);
+                        }
+                        Text(place.placeTitle)
                     }
-                    else {
-                        HStack {
-                          Image(systemName: "location.square").foregroundColor(.green).frame(width: 40, height: 40);
-                          Text(place.placeTitle)
-                      }
-                    }
+
                 }
             }
             .onDelete(perform: deletePlaces)
@@ -59,6 +57,7 @@ struct MasterView: View {
             // Add to environment variable view context with initial values
             let newPlace = Place(context: viewContext)
             newPlace.id = UUID()
+            newPlace.timestamp = Date()
             newPlace.title = "New Place"
             newPlace.details = ""
             newPlace.latitude = "0.0"
