@@ -11,18 +11,21 @@ struct MasterView: View {
     // Environmental variable for using functions for adding/ deleting from context.
     @Environment(\.managedObjectContext) private var viewContext
     
-    // Fetch request from Database using class entity.
+    // Fetch request from Database using class entity. Sorts by timestamp attribute ascending.
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Place.timestamp, ascending: true)],
         animation: .default)
     private var places: FetchedResults<Place>
 
     var body: some View {
+        // Create a list and iterate through each fetched place.
         List {
             ForEach(places) { place in
+                // Navigation link that routes to the details of each individual place.
                 NavigationLink(destination: DetailView(place: place)) {
+                    // Each list item is laid out horizontally with an image followed by the place title.
                     HStack {
-                        // If place url starts with https:// and ends with .jpg or .png render.
+                        // If place url starts with https:// and ends with .jpg or .png render Master Image View. Has smaller image size.
                         if(
                             (place.placeUrl.hasPrefix("https://") && place.placeUrl.hasSuffix(".jpg")) ||
                             (place.placeUrl.hasPrefix("https://") && place.placeUrl.hasSuffix(".png"))
@@ -34,14 +37,15 @@ struct MasterView: View {
                         else {
                             Image(systemName: "location.square").foregroundColor(.green).frame(width: 40, height: 40);
                         }
+                        // Text for each list item. Default valueis "New Place" when created using addPlace().
                         Text(place.placeTitle)
                     }
-
                 }
             }
+            // Delete function below for deleting a list item using index set.
             .onDelete(perform: deletePlaces)
         }
-        // Set a toolbar with a leading edit button and trailing plus button.
+        // Set a toolbar with a leading plus button and trailing edit button.
         .toolbar {
             ToolbarItem(placement:
             .navigationBarLeading) {
@@ -73,8 +77,7 @@ struct MasterView: View {
                 // Attempt to save to view context otherwise throw an error
                 try viewContext.save()
             } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                // fatalError() causes the application to generate a crash log and terminate. For development purposes. 
                 let nsError = error as NSError
                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
             }
@@ -90,8 +93,7 @@ struct MasterView: View {
                 // Attempt to save to view context otherwise throw an error
                 try viewContext.save()
             } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                // fatalError() causes the application to generate a crash log and terminate. For development purposes.
                 let nsError = error as NSError
                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
             }

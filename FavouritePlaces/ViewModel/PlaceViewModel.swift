@@ -35,5 +35,4 @@ extension Place {
         get { longitude ?? "" }
         set { longitude = newValue}
     }
-    
 }

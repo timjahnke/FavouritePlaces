@@ -24,7 +24,7 @@ struct DetailView: View {
                     .foregroundColor(.black)
                     .font(.system(size: 30))
                     .fontWeight(.bold)) {}
-                // If place url starts with https:// and ends with .jpg or .png render.
+                // If place url starts with https:// and ends with .jpg or .png render Detail Image View. Has larger image size.
                 if(
                     (place.placeUrl.hasPrefix("https://") && place.placeUrl.hasSuffix(".jpg")) ||
                     (place.placeUrl.hasPrefix("https://") && place.placeUrl.hasSuffix(".png"))
