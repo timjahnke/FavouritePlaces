@@ -19,7 +19,7 @@ struct MasterView: View {
 
     var body: some View {
         List {
-            ForEach(places, id: \.self.id) { place in
+            ForEach(places) { place in
                 NavigationLink(destination: DetailView(place: place)) {
                     if(place.placeUrl.contains("https://www"))  {
                         HStack {
@@ -64,7 +64,6 @@ struct MasterView: View {
             newPlace.latitude = "0.0"
             newPlace.longitude = "0.0"
             newPlace.url = ""
-
             do {
                 // Attempt to save to view context otherwise throw an error
                 try viewContext.save()
@@ -82,7 +81,6 @@ struct MasterView: View {
         withAnimation {
             // Return an array of retrieved places using the index set. Delete each NSObject from array.
             offsets.map { places[$0] }.forEach(viewContext.delete)
-
             do {
                 // Attempt to save to view context otherwise throw an error
                 try viewContext.save()

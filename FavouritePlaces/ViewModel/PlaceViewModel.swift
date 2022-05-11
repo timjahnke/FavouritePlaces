@@ -16,18 +16,22 @@ extension Place {
         get { title ?? "" }
         set { title = newValue}
     }
+    // Sets optional properties to non-optional ViewModel properties
     var placeDetails: String {
         get { details ?? "" }
         set { details = newValue}
     }
+    // Sets optional properties to non-optional ViewModel properties
     var placeUrl: String {
         get { url ?? "" }
         set { url = newValue}
     }
+    // Sets optional properties to non-optional ViewModel properties
     var placeLatitude: String {
         get { latitude ?? "" }
         set { latitude = newValue}
     }
+    // Sets optional properties to non-optional ViewModel properties
     var placeLongitude: String {
         get { longitude ?? "" }
         set { longitude = newValue}

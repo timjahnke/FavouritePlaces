@@ -8,14 +8,16 @@
 import SwiftUI
 import CoreData
 
+// Main view for displaying content. Home Screen
 struct ContentView: View {
     var body: some View {
         // Create a navigation view that uses the master view component.
-        // Also add a navigation title and view style to remove console errors. 
         NavigationView {
             MasterView()
+            // Navigation title for the Home Screen
             .navigationTitle("Favourite Places")
         }
+        // Add view style to remove console errors.
         .navigationViewStyle(.stack)
     }
 }
