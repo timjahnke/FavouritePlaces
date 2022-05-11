@@ -3,12 +3,12 @@
     <entity name="Place" representedClassName="Place" syncable="YES" codeGenerationType="class">
         <attribute name="details" optional="YES" attributeType="String"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="image" optional="YES" attributeType="String"/>
         <attribute name="latitude" optional="YES" attributeType="String"/>
         <attribute name="longitude" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="url" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="Place" positionX="151.5878295898438" positionY="-628.6495666503906" width="128" height="133"/>
+        <element name="Place" positionX="151.5878295898438" positionY="-628.6495666503906" width="128" height="119"/>
     </elements>
 </model>

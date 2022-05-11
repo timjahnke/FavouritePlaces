@@ -20,9 +20,9 @@ extension Place {
         get { details ?? "" }
         set { details = newValue}
     }
-    var placeImage: String {
-        get { image ?? "" }
-        set { image = newValue}
+    var placeUrl: String {
+        get { url ?? "" }
+        set { url = newValue}
     }
     var placeLatitude: String {
         get { latitude ?? "" }

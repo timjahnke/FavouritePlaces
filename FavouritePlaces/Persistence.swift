@@ -20,7 +20,7 @@ struct PersistenceController {
             newPlace.details = ""
             newPlace.latitude = ""
             newPlace.longitude = ""
-            newPlace.image = ""
+            newPlace.url = ""
         }
         do {
             try viewContext.save()

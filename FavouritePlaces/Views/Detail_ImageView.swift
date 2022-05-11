@@ -9,12 +9,12 @@ import SwiftUI
 import Combine
 import CoreData
 
-struct ImageView: View {
+struct Detail_ImageView: View {
     @ObservedObject var place: Place
     
     var image: UIImage {
         guard
-            let url = URL(string: place.placeImage),
+            let url = URL(string: place.placeUrl),
             let data = try? Data(contentsOf: url),
             let nsImage = UIImage(data: data)
         else {

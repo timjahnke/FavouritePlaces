@@ -21,9 +21,17 @@ struct MasterView: View {
         List {
             ForEach(places, id: \.self.id) { place in
                 NavigationLink(destination: DetailView(place: place)) {
-                    HStack {
-                        Image(systemName: "location.square").foregroundColor(.green)
-                        Text(place.placeTitle)
+                    if(place.placeUrl.contains("https://www"))  {
+                        HStack {
+                            Master_ImageView(place: place)
+                            Text(place.placeTitle)
+                        }
+                    }
+                    else {
+                        HStack {
+                          Image(systemName: "location.square").foregroundColor(.green)
+                          Text(place.placeTitle)
+                      }
                     }
                 }
             }
@@ -31,16 +39,16 @@ struct MasterView: View {
         }
         // Set a toolbar with a leading edit button and trailing plus button.
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                EditButton()
-            }
             ToolbarItem(placement:
-            .navigationBarTrailing) {
+            .navigationBarLeading) {
                 Button {
                     addPlace()
                 } label: {
                     Label("Add Item", systemImage: "plus")
                 }
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                EditButton()
             }
         }
     }
@@ -55,7 +63,7 @@ struct MasterView: View {
             newPlace.details = ""
             newPlace.latitude = "0.0"
             newPlace.longitude = "0.0"
-            newPlace.image = ""
+            newPlace.url = ""
 
             do {
                 // Attempt to save to view context otherwise throw an error

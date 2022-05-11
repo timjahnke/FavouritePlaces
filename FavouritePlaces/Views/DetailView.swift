@@ -27,8 +27,8 @@ struct DetailView: View {
                     .fontWeight(.bold)) {}
                 // Default string is "". If string length is greater than 0, render image
                 // Else render system image default.
-                if(place.placeImage.count > 0) {
-                        ImageView(place: place)
+                if(place.placeUrl.count > 0) {
+                        Detail_ImageView(place: place)
                     } else {
                         Image(systemName: "location.square").foregroundColor(.green)
                     }
@@ -67,7 +67,7 @@ struct DetailView: View {
                     do { try viewContext.save()}
                     catch{ fatalError()}
                 })
-                TextField("Edit image URL", text: $place.placeImage, onCommit: {
+                TextField("Edit image URL", text: $place.placeUrl, onCommit: {
                     // Attempt save else throw fatalError
                     do { try viewContext.save()}
                     catch{ fatalError()}
