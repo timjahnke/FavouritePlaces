@@ -27,7 +27,7 @@ struct DetailView: View {
                     .fontWeight(.bold)) {}
                 // Default string is "". If string length is greater than 0, render image
                 // Else render system image default.
-                if(place.placeUrl.count > 0) {
+                if(place.placeUrl.contains("https://www"))  {
                         Detail_ImageView(place: place)
                     } else {
                         Image(systemName: "location.square").foregroundColor(.green)
@@ -57,31 +57,57 @@ struct DetailView: View {
         // Saves results to context to update Class Place 
         else if(editMode?.wrappedValue == .active) {
             List {
-                TextField("Edit title", text: $place.placeTitle, onCommit: {
-                    // Attempt save else throw fatalError
-                    do { try viewContext.save()}
-                    catch{ fatalError()}
-                })
-                TextField("Edit place details", text: $place.placeDetails, onCommit: {
-                    // Attempt save else throw fatalError
-                    do { try viewContext.save()}
-                    catch{ fatalError()}
-                })
-                TextField("Edit image URL", text: $place.placeUrl, onCommit: {
-                    // Attempt save else throw fatalError
-                    do { try viewContext.save()}
-                    catch{ fatalError()}
-                })
-                TextField("Edit place latitude", text: $place.placeLatitude, onCommit: {
-                    // Attempt save else throw fatalError
-                    do { try viewContext.save()}
-                    catch{ fatalError()}
-                })
-                TextField("Edit place longitude", text: $place.placeLongitude, onCommit: {
-                    // Attempt save else throw fatalError
-                    do { try viewContext.save()}
-                    catch{ fatalError()}
-                })
+                HStack {
+                    Text("Title: ")
+                    TextField("Edit title", text: $place.placeTitle, onCommit: {
+                        // Attempt save else throw fatalError
+                        do { try viewContext.save()}
+                        catch{ fatalError()}
+                    })
+                }
+               
+                // Create a vertical layout to display text inline with textfield.
+                // On commit save to context else throw error
+                VStack {
+                    Text("Image URL")
+                    TextField("Edit image URL", text: $place.placeUrl, onCommit: {
+                        // Attempt save else throw fatalError
+                        do { try viewContext.save()}
+                        catch{ fatalError()}
+                    })
+                }
+              
+                
+                
+                VStack{
+                    padding(2)
+                    Text("Enter Place Detail Below:")
+                    TextField("Edit place details", text: $place.placeDetails, onCommit: {
+                        // Attempt save else throw fatalError
+                        do { try viewContext.save()}
+                        catch{ fatalError()}
+                    })
+                }
+                // Create a horizontal layout to display text inline with textfield.
+                HStack{
+                    Text("Latitude: ")
+                    TextField("Edit place latitude", text: $place.placeLatitude, onCommit: {
+                        // Attempt save else throw fatalError
+                        do { try viewContext.save()}
+                        catch{ fatalError()}
+                    })
+                }
+             
+                // Create a horizontal layout to display text inline with textfield.
+                HStack {
+                    Text("Longitude: ")
+                    TextField("Edit place longitude", text: $place.placeLongitude, onCommit: {
+                        // Attempt save else throw fatalError
+                        do { try viewContext.save()}
+                        catch{ fatalError()}
+                    })
+                }
+                
             }
             // Create a toolbar edit button trailing.
             .toolbar {
