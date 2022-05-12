@@ -17,56 +17,43 @@ class FavouritePlacesTests: XCTestCase {
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    
+    // Check url starts with "https://" and either ends with ".jpg" or ."png"
+    func testURLSyntax() throws {
+        let url = "https://www.planetware.com/photos-large/AUS/australia-brisbane-city-2.jpg"
+        XCTAssertTrue(
+            (url.hasPrefix("https://") && url.hasSuffix(".jpg")) ||
+            (url.hasPrefix("https://") && url.hasSuffix(".png"))
+            )
+    }
+   
+    // Check if details is not an empty string
+    func testDetails() throws {
+        let details = "This city is the capital of Queensland, Australia."
+        XCTAssertTrue(details.count > 0)
     }
     
-    //  (place.placeUrl.hasPrefix("https://") && place.placeUrl.hasSuffix(".jpg")) ||
-    // (place.placeUrl.hasPrefix("https://") && place.placeUrl.hasSuffix(".png"))
-    
-    //      if(place.placeDetails.count > 0) {
-    // Check item name equals matching string
-//    func testItemEqual() {
-//        let name = "Milk"
-//        let item = ItemModel(name: "Milk", isChecked: true)
-//        XCTAssertEqual(item.name, name)
-//    }
-//
-//    // Check item boolean
-//    func testItemIsChecked() {
-//        let item = ItemModel(name: "Bread", isChecked: true)
-//        XCTAssertTrue(item.isChecked)
-//    }
-//
-//    // Check item name is greater than 2 characters
-//    func testItemNameLength() {
-//        let item = ItemModel(name: "Chicken", isChecked: false)
-//        XCTAssertGreaterThan(item.name.count, 2)
-//    }
-//
-//    // Check item name and boolean is not nil
-//    func testItemNotNil() {
-//        let item = ItemModel(name: "Butter", isChecked: false)
-//        XCTAssertNotNil(item.name)
-//        XCTAssertNotNil(item.isChecked)
-//    }
-
-    
-    // Check item array is not empty
-    func testItemArray() {
-        let items: [ItemModel] = [
-            ItemModel(name: "Milk", isChecked: true),
-            ItemModel(name: "Bread", isChecked: false),
-            ItemModel(name: "Chicken", isChecked: false),
-        ]
-        XCTAssertNotNil(items)
+    // Check isFavourite boolean is true
+    func testItemIsChecked() {
+        let isFavourite = true
+        XCTAssertTrue(isFavourite)
     }
 
+    // Check title name is greater than 2 characters
+    func testItemNameLength() {
+        let title = "Brisbane"
+        XCTAssertGreaterThan(title.count, 2)
+    }
+
+    // Check item name and boolean is not nil
+    func testCoordinatesNotNil() {
+        let latitude = "10.0"
+        let longitude = "20.0"
+        XCTAssertNotNil(latitude)
+        XCTAssertNotNil(longitude)
+    }
+
+    // Default performance test case
     func testPerformanceExample() throws {
         // This is an example of a performance test case.
         self.measure {
