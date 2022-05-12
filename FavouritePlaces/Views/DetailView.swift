@@ -29,28 +29,28 @@ struct DetailView: View {
                 // Else render system image default. Default string is "".
                 place.getImage().aspectRatio(contentMode: .fit).foregroundColor(.green)
                
-                    // Check if details is an empty string. Will display default text if empty.
-                    HStack {
-                        if(place.placeDetails.count > 0) {
-                            Text(place.placeDetails)
-                        } else {
-                            Text("Details: ")
-                        }
-                    }
-                // Display latitude and longitude together vertically in list row
-                    VStack {
-                        // Create a row displaying inline heading and latitude.
-                        HStack{
-                            Text("Latitude:")
-                            Text(place.placeLatitude)
-                        }
-                        // Create a row displaying inline heading and longitude.
-                        HStack{
-                            Text("Longitude:")
-                            Text(place.placeLongitude)
-                        }
+                // Check if details is an empty string. Will display default text if empty.
+                HStack {
+                    if(place.placeDetails.count > 0) {
+                        Text(place.placeDetails)
+                    } else {
+                        Text("Details: ")
                     }
                 }
+                // Display latitude and longitude together vertically in list row
+                VStack {
+                    // Create a row displaying inline heading and latitude.
+                    HStack{
+                        Text("Latitude:")
+                        Text(place.placeLatitude)
+                    }
+                    // Create a row displaying inline heading and longitude.
+                    HStack{
+                        Text("Longitude:")
+                        Text(place.placeLongitude)
+                    }
+                }
+            }
             // Create a toolbar edit button trailing.
             .toolbar {
                 ToolbarItem(placement:
@@ -64,50 +64,43 @@ struct DetailView: View {
         else if(editMode?.wrappedValue == .active) {
             List {
                 // Create a horizontal layout to display title and title textfield.
-                // On commit save to context else throw error.
                 HStack {
                     Text("Title: ").bold()
                     TextField("Edit title", text: $place.placeTitle, onCommit: {
+                        // On commit save with ViewModel else throw error.
                         place.save()
                     })
                 }
-               
                 // Create a vertical layout to display text inline with textfield.
-                // On commit save to context else throw error.
                 VStack {
                     Text("Image URL").bold()
                     TextField("Edit image URL", text: $place.placeUrl, onCommit: {
-                        // Attempt save else throw fatalError
+                        // On commit save with ViewModel else throw error.
                         place.save()
                     })
                 }
-                
                 // Create vertical layout to display text and textfield for place details.
-                // On commit save to context else throw error.
                 VStack{
                     padding(2)
                     Text("Enter Place Detail Below:").bold()
                     TextField("Edit place details", text: $place.placeDetails, onCommit: {
-                        // Attempt save else throw fatalError
+                        // On commit save with ViewModel else throw error.
                         place.save()
                     })
                 }
                 // Create a horizontal layout to display text inline with textfield.
-                // On commit save to context else throw error.
                 HStack{
                     Text("Latitude: ").bold()
                     TextField("Edit place latitude", text: $place.placeLatitude, onCommit: {
-                        // Attempt save else throw fatalError
+                        // On commit save with ViewModel else throw error.
                         place.save()
                     })
                 }
-             
                 // Create a horizontal layout to display text inline with textfield.
-                // On commit save to context else throw error.
                 HStack {
                     Text("Longitude: ").bold()
                     TextField("Edit place longitude", text: $place.placeLongitude, onCommit: {
-                        // Attempt save else throw fatalError
+                        // On commit save with ViewModel else throw error.
                         place.save()
                     })
                 }
