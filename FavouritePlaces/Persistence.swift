@@ -15,6 +15,7 @@ struct PersistenceController {
         let viewContext = result.container.viewContext
         for _ in 0..<10 {
             let newPlace = Place(context: viewContext)
+            // Set initial empty string values for newPlace attributes. Setting UUID() and Date() typing for respective attributes.
             newPlace.id = UUID()
             newPlace.timestamp = Date()
             newPlace.title = "" 
@@ -24,10 +25,10 @@ struct PersistenceController {
             newPlace.url = ""
         }
         do {
+            // Attempt to save to persistence controller's view context container.
             try viewContext.save()
         } catch {
-            // Replace this implementation with code to handle the error appropriately.
-            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            // Otherwise fatalError() causes the application to generate a crash log and terminate. For development purposes.
             let nsError = error as NSError
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
@@ -43,8 +44,7 @@ struct PersistenceController {
         }
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                // fatalError() causes the application to generate a crash log and terminate. For development purposes.
 
                 /*
                  Typical reasons for an error here include:
