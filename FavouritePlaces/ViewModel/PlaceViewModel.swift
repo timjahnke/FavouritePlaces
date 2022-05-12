@@ -10,7 +10,8 @@ import CoreData
 import UIKit
 import SwiftUI
 
-let defaultImage = Image(systemName: "location.square")
+fileprivate let defaultImage = Image(systemName: "location.square")
+fileprivate var downloadedImages = [URL: Image]()
 
 // Extends the existing Class Place from the CoreData database.
 extension Place {
@@ -41,17 +42,36 @@ extension Place {
     }
     
     func getImage() -> Image {
-        guard let url = URL(string: placeUrl),
-              let data = try? Data(contentsOf: url),
+        // Try convert string to URL, else return default
+        guard let url = URL(string: placeUrl) else { return defaultImage }
+        // If image already exists, find as association in array
+        if let image = downloadedImages[url] { return image }
+        
+        // Try get data from url to return a UIImage, else return default image.
+        guard let data = try? Data(contentsOf: url),
               let uiImg = UIImage(data: data) else { return
             defaultImage }
-        return Image(uiImage: uiImg).resizable()
+        
+        // On successful data, create an Image with a uiImage.
+        let image = Image(uiImage: uiImg).resizable()
+        // Add the image to the downloaded images cache. 
+        downloadedImages[url] = image
+        return image
     }
     
-  
-    //.scaledToFit()
-//    Image(systemName: "location.square").foregroundColor(.green).frame(width: 40, height: 40);
- 
+    @discardableResult
+    // Save function that uses the managed object context of the class Place. Saves to context. Return boolean
+    func save() -> Bool {
+        // Try save to managed object context
+        do {
+            try managedObjectContext?.save()
+        // Throw if cannot save. Print error description.
+        } catch {
+            print("Error saving: \(error)")
+            return false
+        }
+        return true
+    }
 }
 
 

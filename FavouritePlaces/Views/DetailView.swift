@@ -68,11 +68,7 @@ struct DetailView: View {
                 HStack {
                     Text("Title: ").bold()
                     TextField("Edit title", text: $place.placeTitle, onCommit: {
-                        // Attempt save else throw fatalError
-                        do { try viewContext.save()
-                            print("title saved")
-                        }
-                        catch{ fatalError()}
+                        place.save()
                     })
                 }
                
@@ -82,10 +78,7 @@ struct DetailView: View {
                     Text("Image URL").bold()
                     TextField("Edit image URL", text: $place.placeUrl, onCommit: {
                         // Attempt save else throw fatalError
-                        do { try viewContext.save()
-                            print("url saved")
-                        }
-                        catch{ fatalError()}
+                        place.save()
                     })
                 }
                 
@@ -96,10 +89,7 @@ struct DetailView: View {
                     Text("Enter Place Detail Below:").bold()
                     TextField("Edit place details", text: $place.placeDetails, onCommit: {
                         // Attempt save else throw fatalError
-                        do { try viewContext.save()
-                            print("details saved")
-                        }
-                        catch{ fatalError()}
+                        place.save()
                     })
                 }
                 // Create a horizontal layout to display text inline with textfield.
@@ -108,10 +98,7 @@ struct DetailView: View {
                     Text("Latitude: ").bold()
                     TextField("Edit place latitude", text: $place.placeLatitude, onCommit: {
                         // Attempt save else throw fatalError
-                        do { try viewContext.save()
-                            print("latitude saved")
-                        }
-                        catch{ fatalError()}
+                        place.save()
                     })
                 }
              
@@ -121,10 +108,7 @@ struct DetailView: View {
                     Text("Longitude: ").bold()
                     TextField("Edit place longitude", text: $place.placeLongitude, onCommit: {
                         // Attempt save else throw fatalError
-                        do { try viewContext.save()
-                            print("longitude saved")
-                        }
-                        catch{ fatalError()}
+                        place.save()
                     })
                 }
             }

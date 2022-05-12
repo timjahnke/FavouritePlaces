@@ -64,14 +64,8 @@ struct MasterView: View {
             newPlace.latitude = "0.0"
             newPlace.longitude = "0.0"
             newPlace.url = ""
-            do {
-                // Attempt to save to view context otherwise throw an error
-                try viewContext.save()
-            } catch {
-                // fatalError() causes the application to generate a crash log and terminate. For development purposes. 
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+            // Attempt to save to view context using function inside ViewModel otherwise throw an error
+            newPlace.save()
         }
     }
  
