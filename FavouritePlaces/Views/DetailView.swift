@@ -16,7 +16,7 @@ struct DetailView: View {
     @ObservedObject var place: Place
     
     var body: some View {
-        // If Edit Mode is active, create a list and render plain text with Class Place data
+        // If Edit Mode is not active, create a list and render plain text with Class Place data
         if(editMode?.wrappedValue == .inactive) {
             List {
                 // Create section with place title
@@ -26,17 +26,9 @@ struct DetailView: View {
                     .font(.system(size: 30))
                     .fontWeight(.bold)) {}
                 // If place url starts with https:// and ends with .jpg or .png
-                if(
-                    (place.placeUrl.hasPrefix("https://") && place.placeUrl.hasSuffix(".jpg")) ||
-                    (place.placeUrl.hasPrefix("https://") && place.placeUrl.hasSuffix(".png"))
-                    )
-                    {
-                        // render Detail Image View. Has larger image size.
-                        Detail_ImageView(place: place)
-                    // Else render system image default. Default string is "".
-                    } else {
-                        Image(systemName: "location.square").foregroundColor(.green)
-                    }
+                // Else render system image default. Default string is "".
+                place.getImage().aspectRatio(contentMode: .fit).foregroundColor(.green)
+               
                     // Check if details is an empty string. Will display default text if empty.
                     HStack {
                         if(place.placeDetails.count > 0) {
@@ -77,7 +69,9 @@ struct DetailView: View {
                     Text("Title: ").bold()
                     TextField("Edit title", text: $place.placeTitle, onCommit: {
                         // Attempt save else throw fatalError
-                        do { try viewContext.save()}
+                        do { try viewContext.save()
+                            print("title saved")
+                        }
                         catch{ fatalError()}
                     })
                 }
@@ -88,7 +82,9 @@ struct DetailView: View {
                     Text("Image URL").bold()
                     TextField("Edit image URL", text: $place.placeUrl, onCommit: {
                         // Attempt save else throw fatalError
-                        do { try viewContext.save()}
+                        do { try viewContext.save()
+                            print("url saved")
+                        }
                         catch{ fatalError()}
                     })
                 }
@@ -100,7 +96,9 @@ struct DetailView: View {
                     Text("Enter Place Detail Below:").bold()
                     TextField("Edit place details", text: $place.placeDetails, onCommit: {
                         // Attempt save else throw fatalError
-                        do { try viewContext.save()}
+                        do { try viewContext.save()
+                            print("details saved")
+                        }
                         catch{ fatalError()}
                     })
                 }
@@ -110,7 +108,9 @@ struct DetailView: View {
                     Text("Latitude: ").bold()
                     TextField("Edit place latitude", text: $place.placeLatitude, onCommit: {
                         // Attempt save else throw fatalError
-                        do { try viewContext.save()}
+                        do { try viewContext.save()
+                            print("latitude saved")
+                        }
                         catch{ fatalError()}
                     })
                 }
@@ -121,7 +121,9 @@ struct DetailView: View {
                     Text("Longitude: ").bold()
                     TextField("Edit place longitude", text: $place.placeLongitude, onCommit: {
                         // Attempt save else throw fatalError
-                        do { try viewContext.save()}
+                        do { try viewContext.save()
+                            print("longitude saved")
+                        }
                         catch{ fatalError()}
                     })
                 }

@@ -26,17 +26,8 @@ struct MasterView: View {
                     // Each list item is laid out horizontally with an image followed by the place title.
                     HStack {
                         // If place url starts with https:// and ends with .jpg or .png render Master Image View. Has smaller image size.
-                        if(
-                            (place.placeUrl.hasPrefix("https://") && place.placeUrl.hasSuffix(".jpg")) ||
-                            (place.placeUrl.hasPrefix("https://") && place.placeUrl.hasSuffix(".png"))
-                            )
-                        {
-                            Master_ImageView(place: place)
-                        }
-                        // Else render system image default. Default string is "". 
-                        else {
-                            Image(systemName: "location.square").foregroundColor(.green).frame(width: 40, height: 40);
-                        }
+                        // Else render system image default. Default string is "".
+                        place.getImage().aspectRatio(contentMode: .fit).foregroundColor(.green).frame(width: 40, height: 40)
                         // Text for each list item. Default valueis "New Place" when created using addPlace().
                         Text(place.placeTitle)
                     }
