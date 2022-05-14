@@ -11,6 +11,7 @@ import SwiftUI
 // Struct used for mounting content view & use of persistence across the app.
 struct FavouritePlacesApp: App {
     let persistenceController = PersistenceController.shared
+ 
 
     var body: some Scene {
         WindowGroup {

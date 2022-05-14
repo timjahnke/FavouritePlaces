@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import MapKit
 
 // Main view for displaying content. Home Screen
 struct ContentView: View {

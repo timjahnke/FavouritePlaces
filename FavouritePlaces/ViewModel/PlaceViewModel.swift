@@ -9,6 +9,7 @@ import Foundation
 import CoreData
 import UIKit
 import SwiftUI
+import MapKit
 
 fileprivate let defaultImage = Image(systemName: "location.square")
 fileprivate var downloadedImages = [URL: Image]()
@@ -40,6 +41,14 @@ extension Place {
         get { longitude ?? "" }
         set { longitude = newValue}
     }
+    
+//    var placeRegion: MKCoordinateRegion {
+//        
+//        let numLatitude = Double(placeLatitude)
+//        let numLongitude = Double(placeLongitude)
+//        let combinedCoordinates = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: numLatitude, longitude: numLongitude), latitudinalMeters: 5000, longitudinalMeters: 5000)
+//       return combinedCoordinates
+//    }
     
     func getImage() -> Image {
         // Try convert string to URL, else return default

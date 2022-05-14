@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct MasterView: View {
     // Environmental variable for using functions for adding/ deleting from context.
     @Environment(\.managedObjectContext) private var viewContext
-    
+   
     // Fetch request from Database using class entity. Sorts by timestamp attribute ascending.
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Place.timestamp, ascending: true)],
@@ -85,9 +86,9 @@ struct MasterView: View {
         }
     }
 }
-
-struct MasterView_Previews: PreviewProvider {
-    static var previews: some View {
-        MasterView()
-    }
-}
+//
+//struct MasterView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MasterView()
+//    }
+//}

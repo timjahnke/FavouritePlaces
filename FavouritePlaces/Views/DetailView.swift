@@ -6,11 +6,14 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct DetailView: View {
     // Environmental variables for saving to view context and edit mode.
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.editMode) var editMode
+//     For Mapkit binding
+    @State var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: -27.47, longitude: 153.02), latitudinalMeters: 5000, longitudinalMeters: 5000)
     
     // Observe the Class \Place from CoreData
     @ObservedObject var place: Place
@@ -37,19 +40,25 @@ struct DetailView: View {
                         Text("Details: ")
                     }
                 }
-                // Display latitude and longitude together vertically in list row
-                VStack {
-                    // Create a row displaying inline heading and latitude.
-                    HStack{
-                        Text("Latitude:")
-                        Text(place.placeLatitude)
-                    }
-                    // Create a row displaying inline heading and longitude.
-                    HStack{
-                        Text("Longitude:")
-                        Text(place.placeLongitude)
-                    }
+                
+                // Display Navigation Link to MapView Page
+                NavigationLink(destination: MapView(region: $region)){
+                   Text("Map of Brisbane")
                 }
+                
+//                // Display latitude and longitude together vertically in list row
+//                VStack {
+//                    // Create a row displaying inline heading and latitude.
+//                    HStack{
+//                        Text("Latitude:")
+//                        Text(place.placeLatitude)
+//                    }
+//                    // Create a row displaying inline heading and longitude.
+//                    HStack{
+//                        Text("Longitude:")
+//                        Text(place.placeLongitude)
+//                    }
+//                }
             }
             // Create a toolbar edit button trailing.
             .toolbar {
@@ -89,21 +98,21 @@ struct DetailView: View {
                     })
                 }
                 // Create a horizontal layout to display text inline with textfield.
-                HStack{
-                    Text("Latitude: ").bold()
-                    TextField("Edit place latitude", text: $place.placeLatitude, onCommit: {
-                        // On commit save with ViewModel else throw error.
-                        place.save()
-                    })
-                }
+//                HStack{
+//                    Text("Latitude: ").bold()
+//                    TextField("Edit place latitude", text: $place.placeLatitude, onCommit: {
+//                        // On commit save with ViewModel else throw error.
+//                        place.save()
+//                    })
+//                }
                 // Create a horizontal layout to display text inline with textfield.
-                HStack {
-                    Text("Longitude: ").bold()
-                    TextField("Edit place longitude", text: $place.placeLongitude, onCommit: {
-                        // On commit save with ViewModel else throw error.
-                        place.save()
-                    })
-                }
+//                HStack {
+//                    Text("Longitude: ").bold()
+//                    TextField("Edit place longitude", text: $place.placeLongitude, onCommit: {
+//                        // On commit save with ViewModel else throw error.
+//                        place.save()
+//                    })
+//                }
             }
             // Create a toolbar edit button trailing.
             .toolbar {
