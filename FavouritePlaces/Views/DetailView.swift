@@ -12,8 +12,6 @@ struct DetailView: View {
     // Environmental variables for saving to view context and edit mode.
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.editMode) var editMode
-//     For Mapkit binding
-    @State var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: -27.47, longitude: 153.02), latitudinalMeters: 5000, longitudinalMeters: 5000)
     
     // Observe the Class \Place from CoreData
     @ObservedObject var place: Place
@@ -42,7 +40,7 @@ struct DetailView: View {
                 }
                 
                 // Display Navigation Link to MapView Page
-                NavigationLink(destination: MapView(region: $region)){
+                NavigationLink(destination: MapView(place: place)){
                    Text("Map of Brisbane")
                 }
                 

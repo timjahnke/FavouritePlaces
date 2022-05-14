@@ -9,20 +9,20 @@ import SwiftUI
 import MapKit
 
 struct MapView: View {
-    @Binding var region: MKCoordinateRegion
     @Environment(\.editMode) var editMode
+    @ObservedObject var place: Place
     
     var body: some View {
         if(editMode?.wrappedValue == .inactive) {
             VStack {
-                Map(coordinateRegion: $region )
+                Map(coordinateRegion: $place.placeRegion)
                 HStack {
-                    Text("Latitude: ")
-                    Text(region.latitudeString)
+                    Text("Lat: ")
+                    Text(place.placeRegion.latitudeString)
                 }
                 HStack {
-                    Text("Longitude: ")
-                    Text(region.longitudeString)
+                    Text("Lon: ")
+                    Text(place.placeRegion.longitudeString)
                 }
             }
             .toolbar {
@@ -34,14 +34,14 @@ struct MapView: View {
         }
         if(editMode?.wrappedValue == .active) {
             VStack {
-                Map(coordinateRegion: $region )
+                Map(coordinateRegion: $place.placeRegion )
                 HStack {
-                    Text("Latitude: ")
-                    TextField("Enter Latitude", text: $region.latitudeString)
+                    Text("Lat: ")
+                    TextField("Enter Latitude", text: $place.placeRegion.latitudeString)
                 }
                 HStack {
-                    Text("Longitude: ")
-                    TextField("Enter Longitude", text: $region.longitudeString)
+                    Text("Lon: ")
+                    TextField("Enter Longitude", text: $place.placeRegion.longitudeString)
                 }
             }
             .toolbar {
