@@ -62,8 +62,8 @@ struct MasterView: View {
             newPlace.timestamp = Date()
             newPlace.title = "New Place"
             newPlace.details = ""
-            newPlace.latitude = "0.0"
-            newPlace.longitude = "0.0"
+            newPlace.latitude = 0.0
+            newPlace.longitude = 0.0
             newPlace.url = ""
             // Attempt to save to view context using function inside ViewModel otherwise throw an error
             newPlace.save()

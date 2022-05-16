@@ -15,14 +15,14 @@ struct MapView: View {
     var body: some View {
         if(editMode?.wrappedValue == .inactive) {
             VStack {
-                Map(coordinateRegion: $place.placeRegion)
+                Map(coordinateRegion: $place.region)
                 HStack {
                     Text("Lat: ")
-                    Text(place.placeRegion.latitudeString)
+                    Text("\(place.placeLatitude)")
                 }
                 HStack {
                     Text("Lon: ")
-                    Text(place.placeRegion.longitudeString)
+                    Text("\(place.placeLongitude)")
                 }
             }
             .toolbar {
@@ -34,14 +34,18 @@ struct MapView: View {
         }
         if(editMode?.wrappedValue == .active) {
             VStack {
-                Map(coordinateRegion: $place.placeRegion )
+                Map(coordinateRegion: $place.region )
                 HStack {
                     Text("Lat: ")
-                    TextField("Enter Latitude", text: $place.placeRegion.latitudeString)
+                    TextField("Enter Latitude", text: $place.region.latitudeString, onCommit: {
+                        place.save()
+                    })
                 }
                 HStack {
                     Text("Lon: ")
-                    TextField("Enter Longitude", text: $place.placeRegion.longitudeString)
+                    TextField("Enter Longitude", text: $place.region.longitudeString, onCommit: {
+                        place.save()
+                    })
                 }
             }
             .toolbar {

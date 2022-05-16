@@ -6,35 +6,10 @@
 //
 
 import CoreData
+import MapKit
 
 struct PersistenceController {
-    static let shared = PersistenceController()
-
-    static var preview: PersistenceController = {
-        let result = PersistenceController(inMemory: true)
-        let viewContext = result.container.viewContext
-        for _ in 0..<10 {
-            let newPlace = Place(context: viewContext)
-            // Set initial empty string values for newPlace attributes. Setting UUID() and Date() typing for respective attributes.
-            newPlace.id = UUID()
-            newPlace.timestamp = Date()
-            newPlace.title = "" 
-            newPlace.details = ""
-            newPlace.latitude = ""
-            newPlace.longitude = ""
-            newPlace.url = ""
-        }
-        do {
-            // Attempt to save to persistence controller's view context container.
-            try viewContext.save()
-        } catch {
-            // Otherwise fatalError() causes the application to generate a crash log and terminate. For development purposes.
-            let nsError = error as NSError
-            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-        }
-        return result
-    }()
-
+    
     let container: NSPersistentContainer
 
     init(inMemory: Bool = false) {

@@ -10,7 +10,7 @@ import SwiftUI
 @main
 // Struct used for mounting content view & use of persistence across the app.
 struct FavouritePlacesApp: App {
-    let persistenceController = PersistenceController.shared
+    let persistenceController = PersistenceController()
  
 
     var body: some Scene {

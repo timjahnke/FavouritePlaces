@@ -13,7 +13,7 @@ import MapKit
 
 fileprivate let defaultImage = Image(systemName: "location.square")
 fileprivate var downloadedImages = [URL: Image]()
-var region = MKCoordinateRegion(center:CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), latitudinalMeters: 5000, longitudinalMeters: 5000)
+var defaultRegion = MKCoordinateRegion(center:CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), latitudinalMeters: 5000, longitudinalMeters: 5000)
 
 // Extends the existing Class Place from the CoreData database.
 extension Place {
@@ -33,24 +33,23 @@ extension Place {
         set { url = newValue}
     }
     // Sets optional properties to non-optional ViewModel properties
-    var placeLatitude: String {
-        get { latitude ?? "" }
-        set { latitude = newValue}
+    var placeLatitude: Double {
+        get { latitude }
+        set { latitude = newValue} 
     }
     // Sets optional properties to non-optional ViewModel properties
-    var placeLongitude: String {
-        get { longitude ?? "" }
+    var placeLongitude: Double {
+        get { longitude }
         set { longitude = newValue}
     }
     
-    var placeRegion: MKCoordinateRegion {
+    var region: MKCoordinateRegion {
         get {
-            region
+            defaultRegion
         }
         set {
-            guard let numLatitude = CLLocationDegrees(placeLatitude) else { return }
-            guard let numLongitude = CLLocationDegrees(placeLongitude) else { return }
-            region = createCoordinates(centerLatitude: numLatitude, centerLongitude: numLongitude)
+            defaultRegion = createCoordinates(centerLatitude: placeLatitude, centerLongitude: placeLongitude)
+            // Objectwillchange.send()
         }
     }
     
@@ -90,6 +89,8 @@ extension Place {
         }
         return true
     }
+    
+    // Add add and delete functions to viewModel
 }
 
 
