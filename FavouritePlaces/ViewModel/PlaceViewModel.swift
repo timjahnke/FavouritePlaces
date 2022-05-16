@@ -13,7 +13,7 @@ import MapKit
 
 fileprivate let defaultImage = Image(systemName: "location.square")
 fileprivate var downloadedImages = [URL: Image]()
-var defaultRegion = MKCoordinateRegion(center:CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), latitudinalMeters: 5000, longitudinalMeters: 5000)
+//var defaultRegion = MKCoordinateRegion(center:CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), latitudinalMeters: 5000, longitudinalMeters: 5000)
 
 // Extends the existing Class Place from the CoreData database.
 extension Place {
@@ -45,11 +45,27 @@ extension Place {
     
     var region: MKCoordinateRegion {
         get {
-            defaultRegion
+            createCoordinates(centerLatitude: placeLatitude, centerLongitude: placeLongitude)
         }
         set {
-            defaultRegion = createCoordinates(centerLatitude: placeLatitude, centerLongitude: placeLongitude)
+            placeLatitude = newValue.center.latitude
+            placeLongitude = newValue.center.longitude
             // Objectwillchange.send()
+        }
+    }
+    
+    var something: Double {
+        get {
+            return placeLatitude
+        }
+    }
+    
+    var formatter: NumberFormatter {
+        get {
+            let temp = NumberFormatter()
+            temp.allowsFloats = true
+            temp.numberStyle = .decimal
+            return temp
         }
     }
     

@@ -37,9 +37,12 @@ struct MapView: View {
                 Map(coordinateRegion: $place.region )
                 HStack {
                     Text("Lat: ")
-                    TextField("Enter Latitude", text: $place.region.latitudeString, onCommit: {
+                    TextField("Enter Latitude", value: $place.placeLatitude, formatter: place.formatter) {
                         place.save()
-                    })
+                    }
+//                    TextField("Enter Latitude", text: $place.region.latitudeString, onCommit: {
+//                        place.save()
+//                    })
                 }
                 HStack {
                     Text("Lon: ")
