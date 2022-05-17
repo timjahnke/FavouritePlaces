@@ -40,7 +40,9 @@ struct DetailView: View {
                 }
                 
                 // Display Navigation Link to MapView Page
-                NavigationLink(destination: MapView(place: place)){
+                NavigationLink(destination: MapView(place: place)
+                   
+                ){
                    Text("Map of Brisbane")
                 }
                 

@@ -45,6 +45,7 @@ extension Place {
     
     var region: MKCoordinateRegion {
         get {
+            // Use Function below for creating computed region using computed coordinates 
             createCoordinates(centerLatitude: placeLatitude, centerLongitude: placeLongitude)
         }
         set {
@@ -54,12 +55,7 @@ extension Place {
         }
     }
     
-    var something: Double {
-        get {
-            return placeLatitude
-        }
-    }
-    
+    // Format double to string for display for view
     var formatter: NumberFormatter {
         get {
             let temp = NumberFormatter()
@@ -69,8 +65,12 @@ extension Place {
         }
     }
     
+    // Added span to region to enable drag feature. 
     func createCoordinates(centerLatitude: CLLocationDegrees, centerLongitude: CLLocationDegrees) -> MKCoordinateRegion {
-        let coordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: centerLatitude, longitude: centerLongitude), latitudinalMeters: 5000, longitudinalMeters: 5000)
+        let span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+        let coordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: centerLatitude, longitude: centerLongitude), span: span)
+        
+//    center: CLLocationCoordinate2D(), latitudinalMeters: 5000, longitudinalMeters: 5000)
         return coordinateRegion
     }
     

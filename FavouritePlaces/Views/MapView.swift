@@ -12,10 +12,25 @@ struct MapView: View {
     @Environment(\.editMode) var editMode
     @ObservedObject var place: Place
     
+    // Stop the view from redrawing until movement has finished
+    //.onDrag
+    // look at map view documentation for interaction method
+    
+    // while dragged, don't touch placed
+    // when finished touch place
+    
+    // similar to on commit. Only after finished dragging commit. 
+    
     var body: some View {
         if(editMode?.wrappedValue == .inactive) {
             VStack {
-                Map(coordinateRegion: $place.region)
+                // Create region from ViewModel region. Also enable interactions like zoom in , drag to pan or both. 
+                // These include: .pan, .zoom or .all.
+                Map(coordinateRegion: $place.region, interactionModes: .pan)
+//                .onChange(of: place.region) { newValue in
+//                    print("after drag")
+//                }
+//                
                 HStack {
                     Text("Lat: ")
                     Text("\(place.placeLatitude)")
@@ -38,17 +53,16 @@ struct MapView: View {
                 HStack {
                     Text("Lat: ")
                     TextField("Enter Latitude", value: $place.placeLatitude, formatter: place.formatter) {
+                        // On commit
                         place.save()
                     }
-//                    TextField("Enter Latitude", text: $place.region.latitudeString, onCommit: {
-//                        place.save()
-//                    })
                 }
                 HStack {
                     Text("Lon: ")
-                    TextField("Enter Longitude", text: $place.region.longitudeString, onCommit: {
+                    TextField("Enter Longitude", value: $place.placeLongitude, formatter: place.formatter) {
+                        // On commit
                         place.save()
-                    })
+                    }
                 }
             }
             .toolbar {

@@ -7,8 +7,9 @@
 
 import Foundation
 import MapKit
+import SwiftUI
 
-extension MKCoordinateRegion {
+extension MKCoordinateRegion: Equatable {
     var latitudeString: String {
         get { "\(center.latitude)"}
         set {
@@ -22,6 +23,10 @@ extension MKCoordinateRegion {
             guard let degrees = CLLocationDegrees(newValue) else { return }
             center.longitude = degrees
         }
+    }
+    
+    public static func == (lhs: MKCoordinateRegion, rhs: MKCoordinateRegion) -> Bool {
+        return lhs.center.latitude == rhs.center.latitude && lhs.center.longitude == rhs.center.longitude
     }
 }
 
