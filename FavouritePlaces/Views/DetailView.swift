@@ -20,12 +20,13 @@ struct DetailView: View {
         // If Edit Mode is not active, create a list and render plain text with Class Place data
         if(editMode?.wrappedValue == .inactive) {
             List {
-                // Create section with place title
+//              Create section with place title
                 Section(header:
                     Text(place.placeTitle)
                     .foregroundColor(.black)
                     .font(.system(size: 30))
-                    .fontWeight(.bold)) {}
+                    .fontWeight(.bold)
+                ) {}
                 // If place url starts with https:// and ends with .jpg or .png
                 // Else render system image default. Default string is "".
                 place.getImage().aspectRatio(contentMode: .fit).foregroundColor(.green)
@@ -40,11 +41,16 @@ struct DetailView: View {
                 }
                 
                 // Display Navigation Link to MapView Page
-                NavigationLink(destination: MapView(place: place)
-                   
-                ){
-                   Text("Map of Brisbane")
+                NavigationLink(destination: MapView(place: place)){
+                    HStack {
+                       
+                        Map(coordinateRegion: $place.imageRegion).aspectRatio(contentMode: .fit)
+                        Text("Map of \(place.placeTitle)")
+                        Spacer()
+                       
+                    }
                 }
+               
                 
 //                // Display latitude and longitude together vertically in list row
 //                VStack {

@@ -22,9 +22,13 @@ struct MapView: View {
     // similar to on commit. Only after finished dragging commit. 
     
     var body: some View {
+        Text("Map of \(place.placeTitle)")
+            .foregroundColor(.black)
+            .font(.system(size: 30))
+            .fontWeight(.bold)
         if(editMode?.wrappedValue == .inactive) {
             VStack {
-                // Create region from ViewModel region. Also enable interactions like zoom in , drag to pan or both. 
+                // Create region from ViewModel region. Also enable interactions like zoom in , drag to pan or both.
                 // These include: .pan, .zoom or .all.
                 Map(coordinateRegion: $place.region, interactionModes: .pan)
 //                .onChange(of: place.region) { newValue in
@@ -49,7 +53,7 @@ struct MapView: View {
         }
         if(editMode?.wrappedValue == .active) {
             VStack {
-                Map(coordinateRegion: $place.region )
+                Map(coordinateRegion: $place.region)
                 HStack {
                     Text("Lat: ")
                     TextField("Enter Latitude", value: $place.placeLatitude, formatter: place.formatter) {
