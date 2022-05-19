@@ -10,7 +10,9 @@ import MapKit
 
 struct MapView: View {
     @Environment(\.editMode) var editMode
+    @State var region: MKCoordinateRegion
     @ObservedObject var place: Place
+//    var location: Location
     
     // Stop the view from redrawing until movement has finished
     //.onDrag
@@ -30,11 +32,17 @@ struct MapView: View {
             VStack {
                 // Create region from ViewModel region. Also enable interactions like zoom in , drag to pan or both.
                 // These include: .pan, .zoom or .all.
-                Map(coordinateRegion: $place.region, interactionModes: .pan)
-//                .onChange(of: place.region) { newValue in
-//                    print("after drag")
-//                }
-//                
+                Map(coordinateRegion: $region, interactionModes: .pan).aspectRatio(contentMode: .fit)
+                    .onChange(of: region) { newValue in
+                        print("after drag")
+    //                    print(region.center.latitude)
+    //                    print(region.center.longitude)
+                        place.placeLatitude = region.center.latitude
+                        place.placeLongitude = region.center.longitude
+                        place.save()
+                        print("lat",place.placeLatitude, "lon", place.placeLongitude)
+                    }
+
                 HStack {
                     Text("Lat: ")
                     Text("\(place.placeLatitude)")
@@ -53,20 +61,23 @@ struct MapView: View {
         }
         if(editMode?.wrappedValue == .active) {
             VStack {
-                Map(coordinateRegion: $place.region)
+                Map(coordinateRegion: $region, interactionModes: .zoom).aspectRatio(contentMode: .fit)
+                    .onChange(of: region) { newValue in
+                    print("after drag")
+//                    print(region.center.latitude)
+//                    print(region.center.longitude)
+                    place.placeLatitude = region.center.latitude
+                    place.placeLongitude = region.center.longitude
+                    place.save()
+                    print("lat",place.placeLatitude, "lon", place.placeLongitude)
+                    }
                 HStack {
                     Text("Lat: ")
-                    TextField("Enter Latitude", value: $place.placeLatitude, formatter: place.formatter) {
-                        // On commit
-                        place.save()
-                    }
+                    TextField("Enter Latitude", value: $region.center.latitude, formatter: place.formatter)
                 }
                 HStack {
                     Text("Lon: ")
-                    TextField("Enter Longitude", value: $place.placeLongitude, formatter: place.formatter) {
-                        // On commit
-                        place.save()
-                    }
+                    TextField("Enter Longitude", value: $region.center.longitude, formatter: place.formatter)
                 }
             }
             .toolbar {

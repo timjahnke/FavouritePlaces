@@ -46,19 +46,7 @@ extension Place {
     var region: MKCoordinateRegion {
         get {
             // Use Function below for creating computed region using computed coordinates 
-            createCoordinates(isSpan: true, centerLatitude: placeLatitude, centerLongitude: placeLongitude)
-        }
-        set {
-            placeLatitude = newValue.center.latitude
-            placeLongitude = newValue.center.longitude
-            // Objectwillchange.send()
-        }
-    }
-    
-    var imageRegion: MKCoordinateRegion {
-        get {
-            // Use Function below for creating computed region using computed coordinates
-            createCoordinates(isSpan: false, centerLatitude: placeLatitude, centerLongitude: placeLongitude)
+            createCoordinates(centerLatitude: placeLatitude, centerLongitude: placeLongitude)
         }
         set {
             placeLatitude = newValue.center.latitude
@@ -77,19 +65,9 @@ extension Place {
         }
     }
     
-    // Added span to region to enable drag feature. 
-    func createCoordinates(isSpan: Bool, centerLatitude: CLLocationDegrees, centerLongitude: CLLocationDegrees) -> MKCoordinateRegion {
-        let span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-       // Check whether function argument isSpan was declared as true or false.
-        if(isSpan) {
-            // If true, create a region with interaction options due to span enabled.
-            let coordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: centerLatitude, longitude: centerLongitude), span: span)
-            return coordinateRegion
-        // If false, create region with no span. It will be fixed and more ideal for an image as there will be no animation by default.
-        } else {
-            let coordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: centerLatitude, longitude: centerLongitude), latitudinalMeters: 5000, longitudinalMeters: 5000)
-            return coordinateRegion
-        }
+        // create region with no span. Uses Latitude and Longitude metres
+    func createCoordinates(centerLatitude: CLLocationDegrees, centerLongitude: CLLocationDegrees) -> MKCoordinateRegion {
+        return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: centerLatitude, longitude: centerLongitude), latitudinalMeters: 5000, longitudinalMeters: 5000)
     }
     
     func getImage() -> Image {

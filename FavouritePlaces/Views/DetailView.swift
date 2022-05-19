@@ -41,13 +41,11 @@ struct DetailView: View {
                 }
                 
                 // Display Navigation Link to MapView Page
-                NavigationLink(destination: MapView(place: place)){
-                    HStack {
-                       
-                        Map(coordinateRegion: $place.imageRegion).aspectRatio(contentMode: .fit)
+                NavigationLink(destination: MapView(region: place.region, place: place)){
+                    VStack {
                         Text("Map of \(place.placeTitle)")
+                        Map(coordinateRegion: $place.region).aspectRatio(contentMode: .fit).frame(width: 100, height: 100)
                         Spacer()
-                       
                     }
                 }
                
