@@ -13,56 +13,43 @@ struct DetailView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.editMode) var editMode
     
-    // Observe the Class \Place from CoreData
+    // Observe the Class Place from CoreData
     @ObservedObject var place: Place
     
     var body: some View {
-        // If Edit Mode is not active, create a list and render plain text with Class Place data
+        // If Edit Mode is not active, create a list and render plain text and map with Class Place data
         if(editMode?.wrappedValue == .inactive) {
             List {
-//              Create section with place title
+                // Create section using place title with black text, specified size in bold.
                 Section(header:
                     Text(place.placeTitle)
                     .foregroundColor(.black)
                     .font(.system(size: 30))
                     .fontWeight(.bold)
                 ) {}
-                // If place url starts with https:// and ends with .jpg or .png
-                // Else render system image default. Default string is "".
+                // Render system image from URL else render default image.
                 place.getImage().aspectRatio(contentMode: .fit).foregroundColor(.green)
                
                 // Check if details is an empty string. Will display default text if empty.
                 HStack {
+                    // Display place.placeDetails if string count is greater than 0.
                     if(place.placeDetails.count > 0) {
                         Text(place.placeDetails)
                     } else {
+                        // Default Text
                         Text("Details: ")
                     }
                 }
                 
-                // Display Navigation Link to MapView Page
+                // Display Navigation Link to MapView Page with a small map and text as a label.
                 NavigationLink(destination: MapView(region: place.region, place: place)){
+                    // Vertical stack of text along with a small map that is the same as the navigation destination's map.
                     VStack {
                         Text("Map of \(place.placeTitle)")
                         Map(coordinateRegion: $place.region).aspectRatio(contentMode: .fit).frame(width: 100, height: 100)
                         Spacer()
                     }
                 }
-               
-                
-//                // Display latitude and longitude together vertically in list row
-//                VStack {
-//                    // Create a row displaying inline heading and latitude.
-//                    HStack{
-//                        Text("Latitude:")
-//                        Text(place.placeLatitude)
-//                    }
-//                    // Create a row displaying inline heading and longitude.
-//                    HStack{
-//                        Text("Longitude:")
-//                        Text(place.placeLongitude)
-//                    }
-//                }
             }
             // Create a toolbar edit button trailing.
             .toolbar {
@@ -84,6 +71,7 @@ struct DetailView: View {
                         place.save()
                     })
                 }
+                
                 // Create a vertical layout to display text inline with textfield.
                 VStack {
                     Text("Image URL").bold()
@@ -92,6 +80,7 @@ struct DetailView: View {
                         place.save()
                     })
                 }
+                
                 // Create vertical layout to display text and textfield for place details.
                 VStack{
                     padding(2)
@@ -101,22 +90,6 @@ struct DetailView: View {
                         place.save()
                     })
                 }
-                // Create a horizontal layout to display text inline with textfield.
-//                HStack{
-//                    Text("Latitude: ").bold()
-//                    TextField("Edit place latitude", text: $place.placeLatitude, onCommit: {
-//                        // On commit save with ViewModel else throw error.
-//                        place.save()
-//                    })
-//                }
-                // Create a horizontal layout to display text inline with textfield.
-//                HStack {
-//                    Text("Longitude: ").bold()
-//                    TextField("Edit place longitude", text: $place.placeLongitude, onCommit: {
-//                        // On commit save with ViewModel else throw error.
-//                        place.save()
-//                    })
-//                }
             }
             // Create a toolbar edit button trailing.
             .toolbar {
@@ -128,9 +101,3 @@ struct DetailView: View {
         }
     }
 }
-
-//struct DetailView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DetailView()
-//    }
-//}

@@ -10,11 +10,13 @@ import SwiftUI
 @main
 // Struct used for mounting content view & use of persistence across the app.
 struct FavouritePlacesApp: App {
+    // Create a persistence controller.
     let persistenceController = PersistenceController()
  
 
     var body: some Scene {
         WindowGroup {
+            // Render Content View
             ContentView()
                 // Use of environment variable for path to managed object context and pass in persistence controller view context. 
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)

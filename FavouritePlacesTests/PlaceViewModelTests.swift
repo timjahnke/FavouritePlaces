@@ -16,5 +16,28 @@ class PlaceViewModel: XCTestCase {
 //        Place(context: managedObjectContext)
 //        managedObjectContext.save()
 //    }
+    
+    
+//    func testGetterAndSetters() {
+//        var person = Person(name: "hello")
+//        XCTAssertEqual(person.name, "hello")
+//
+//        person.name = "goodbye"
+//        XCTAssertEqual(person.name, "goodbye")
+//
+//    }
+    
+    // Create a region
+//    var region: MKCoordinateRegion {
+//        get {
+//            // Use Function below for creating computed region using computed coordinates
+//            createCoordinates(centerLatitude: placeLatitude, centerLongitude: placeLongitude)
+//        }
+//        set {
+//            // Store computed values below with coordinates in new value
+//            placeLatitude = newValue.center.latitude
+//            placeLongitude = newValue.center.longitude
+//        }
+//    }
 
 }

@@ -60,16 +60,7 @@ class FavouritePlacesTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
-    
-//    func testGetterAndSetters() {
-//        var person = Person(name: "hello")
-//        XCTAssertEqual(person.name, "hello")
-//        
-//        person.name = "goodbye"
-//        XCTAssertEqual(person.name, "goodbye")
-//        
-//    }
-    
+  
     func testCreatePerson () {
         // xct assert equal create class
     }
