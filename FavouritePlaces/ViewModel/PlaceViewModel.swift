@@ -11,65 +11,92 @@ import UIKit
 import SwiftUI
 import MapKit
 
+// Default Image that is passed into getImage() function
 fileprivate let defaultImage = Image(systemName: "location.square")
+
+// Store Images so they are not downloaded each time. Checks this array if already existing.
 fileprivate var downloadedImages = [URL: Image]()
-//var defaultRegion = MKCoordinateRegion(center:CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), latitudinalMeters: 5000, longitudinalMeters: 5000)
 
 // Extends the existing Class Place from the CoreData database.
 extension Place {
-    // Sets optional properties to non-optional ViewModel properties
+   
+    // Computed property from title in CoreData
     var placeTitle: String {
+        // Sets optional properties to non-optional
         get { title ?? "" }
+        // Store new value
         set { title = newValue}
     }
-    // Sets optional properties to non-optional ViewModel properties
+    
+    // Computed property from details in CoreData
     var placeDetails: String {
+        // Sets optional properties to non-optional
         get { details ?? "" }
+        // Store new value
         set { details = newValue}
     }
-    // Sets optional properties to non-optional ViewModel properties
+    
+    // Computed property from details in CoreData
     var placeUrl: String {
+        // Sets optional properties to non-optional
         get { url ?? "" }
+        // Store new value
         set { url = newValue}
     }
-    // Sets optional properties to non-optional ViewModel properties
+    
+    // Computed property from latitude in CoreData
     var placeLatitude: Double {
+        // Sets optional properties to non-optional
         get { latitude }
+        // Store new value
         set { latitude = newValue} 
     }
-    // Sets optional properties to non-optional ViewModel properties
+    
+    // Computed property from longitude in CoreData
     var placeLongitude: Double {
+        // Sets optional properties to non-optional
         get { longitude }
+        // Store new value
         set { longitude = newValue}
     }
     
+    // Create a default region to pass to State Binding in MapView
     var region: MKCoordinateRegion {
         get {
             // Use Function below for creating computed region using computed coordinates 
             createCoordinates(centerLatitude: placeLatitude, centerLongitude: placeLongitude)
         }
         set {
+            // Store computed values below with coordinates in new value
             placeLatitude = newValue.center.latitude
             placeLongitude = newValue.center.longitude
-            // Objectwillchange.send()
         }
     }
     
-    // Format double to string for display for view
+    // Format double to string for display in MapView textfield
     var formatter: NumberFormatter {
         get {
-            let temp = NumberFormatter()
-            temp.allowsFloats = true
-            temp.numberStyle = .decimal
-            return temp
+            // Create a number formatter and return with chosen formats
+            let numFormat = NumberFormatter()
+            // Formatter allows floats and decimals
+            numFormat.allowsFloats = true
+            numFormat.numberStyle = .decimal
+            return numFormat
         }
     }
-    
-        // create region with no span. Uses Latitude and Longitude metres
+
+    // Function to create a region using Latitude and Longitude metres.
+    ///     Parameters:
+    ///     centerLatitude: Float , centerLongitude: Float
+    ///     Returns an MKCoordinateRegion()
     func createCoordinates(centerLatitude: CLLocationDegrees, centerLongitude: CLLocationDegrees) -> MKCoordinateRegion {
+        // Returns an MKCoordinate region using parameters with a default latitude/longitude metres of 5000
         return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: centerLatitude, longitude: centerLongitude), latitudinalMeters: 5000, longitudinalMeters: 5000)
     }
     
+    // Function to get images from a web URL
+    ///         Parameters: None
+    ///         Returns an Image
     func getImage() -> Image {
         // Try convert string to URL, else return default
         guard let url = URL(string: placeUrl) else { return defaultImage }
@@ -85,24 +112,26 @@ extension Place {
         let image = Image(uiImage: uiImg).resizable()
         // Add the image to the downloaded images cache. 
         downloadedImages[url] = image
+        // Return the image
         return image
     }
     
     @discardableResult
     // Save function that uses the managed object context of the class Place. Saves to context. Return boolean
+    ///         Parameters: None
+    ///         Returns a boolean based on if save was successful.
     func save() -> Bool {
         // Try save to managed object context
         do {
             try managedObjectContext?.save()
-        // Throw if cannot save. Print error description.
+        // Throw if cannot save.
         } catch {
+            // Print error description.
             print("Error saving: \(error)")
             return false
         }
         return true
     }
-    
-    // Add add and delete functions to viewModel
 }
 
 
