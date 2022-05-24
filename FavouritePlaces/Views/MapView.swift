@@ -63,6 +63,13 @@ struct MapView: View {
         if(editMode?.wrappedValue == .active) {
             // Start a vertical layout
             VStack {
+                // Horizontal layout for displaying coordinates from a name.
+                HStack {
+                    TextField("Enter a name to find coordinates for", text: $place.placeTitle) {
+                        place.lookupCoordinates(for: place.placeTitle)
+                    }
+                }
+                
                 // Create region from ViewModel region. Also enable interaction modes like zoom in, drag to pan or all. Currently using pan.
                 // Also get map to fit to screen.
                 Map(coordinateRegion: $region, interactionModes: .zoom).aspectRatio(contentMode: .fit)

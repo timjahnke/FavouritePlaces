@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import CoreLocation
 import UIKit
 import SwiftUI
 import MapKit
@@ -69,12 +70,6 @@ extension Place {
          set { sunrise = newValue }
      }
     
-    //sunset
-    var placeSunset: String {
-        get { sunset ?? "" }
-        set { sunset = newValue}
-    }
-    
     // Create a default region to pass to State Binding in MapView
     var region: MKCoordinateRegion {
         get {
@@ -99,7 +94,19 @@ extension Place {
             return numFormat
         }
     }
-
+    
+    //sunset
+    var placeSunset: String {
+        get { sunset ?? "" }
+        set { sunset = newValue}
+    }
+    
+    // for coordinate or name lookup
+    var placeName: String {
+        get { name ?? "" }
+        set { name = newValue }
+    }
+    
     // Function to create a region using Latitude and Longitude metres.
     ///     Parameters:
     ///     centerLatitude: Float , centerLongitude: Float
@@ -131,9 +138,6 @@ extension Place {
         return image
     }
     
-    // similar to image.
-    // create sunset cache array
-    // decode & encode
     func getSunDataAndDownload() {
         // create an array e.g. cache: [string: value] = [:]
         // Try convert string to URL, else return default
@@ -186,7 +190,6 @@ extension Place {
         placeSunset = converted.sunset
         
         // Add the image to the downloaded images cache.
-//        print(converted, "the convert")
         sunriseSunsetCache[url] = converted
     }
         
@@ -232,6 +235,61 @@ extension Place {
     // add in addPlace function
     // use discardable results
 //    func addPlace(to context: context)
+    
+    // Look up coordinates from a name
+    func lookupCoordinates(for place: String) {
+        let coder = CLGeocoder()
+        coder.geocodeAddressString(place) { optionalPlacemarks, optionalError in
+            if let error = optionalError {
+                print("Error looking up \(place): \(error.localizedDescription)")
+                return
+            }
+            guard let placemarks = optionalPlacemarks, !placemarks.isEmpty else {
+                print("Placemarks came back empty")
+                return
+            }
+            let placemark = placemarks[0]
+            guard let location = placemark.location else {
+                print("Placemark has no location")
+                return
+            }
+            self.latitude = location.coordinate.latitude
+            self.longitude = location.coordinate.longitude
+            
+        }
+    }
+    
+    // Look up a name from coordinates
+    func lookupName(for location: CLLocation) {
+        let coder = CLGeocoder()
+        coder.reverseGeocodeLocation(location) { optionalPlacemarks, optionalError in
+            if let error = optionalError {
+                print("Error looking up \(location.coordinate): \(error.localizedDescription)")
+                return
+            }
+            guard let placemarks = optionalPlacemarks, !placemarks.isEmpty else {
+                print("Placemarks came back empty")
+                return
+            }
+            let placemark = placemarks[0]
+            for value in [
+                \CLPlacemark.name,
+                \.country,
+                \.isoCountryCode,
+                \.postalCode,
+                \.administrativeArea,
+                \.subAdministrativeArea,
+                \.locality,
+                \.subLocality,
+                \.thoroughfare,
+                \.subThoroughfare
+            ] {
+                print(String(describing: placemark[keyPath: value]))
+            }
+            self.placeName = placemark.subAdministrativeArea ?? placemark.locality ?? placemark.subLocality ?? placemark.name ?? placemark.thoroughfare ?? placemark.subThoroughfare ?? placemark.country ?? ""
+        }
+    }
+    
 }
 
 
