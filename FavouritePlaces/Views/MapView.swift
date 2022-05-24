@@ -59,6 +59,7 @@ struct MapView: View {
                 }
             }
         }
+        // Fix this. Does not redraw on change with text field
         // When edit mode is active.
         if(editMode?.wrappedValue == .active) {
             // Start a vertical layout

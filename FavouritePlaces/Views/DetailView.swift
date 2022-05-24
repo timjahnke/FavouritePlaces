@@ -51,6 +51,7 @@ struct DetailView: View {
                     }
                 }
                 
+                //Fix this. Needs to redraw automatically instead of on button click.
                 // Sunrise / Sunset display
                 VStack{
                     Button("Look up sunrise and sunset") {
