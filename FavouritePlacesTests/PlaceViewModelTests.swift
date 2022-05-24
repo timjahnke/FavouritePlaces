@@ -7,6 +7,7 @@
 
 import XCTest
 import MapKit
+import CoreData
 
 class PlaceViewModel: XCTestCase {
 
@@ -50,4 +51,54 @@ class PlaceViewModel: XCTestCase {
         // Test regions for equality
         XCTAssertEqual(region1, region2)
     }
+    
+    // test core data stuff
+    
+    //
+//    var context: NSManagedObjectContext
+    
+//    override func setUp() {
+//        context = PersistenceController().container.viewContext
+//        do {
+//            for result in items {
+//                context.delete(result)
+//            }
+//            try context.save()
+//        } catch {
+//            XCTFail(error.localizedDescription)
+//        }
+//    }
+    
+//    var items: [Person] = {
+//        let fetchRequest = NSFetchRequest<Person>(entityName: "Person")
+//        do {
+//            return try context.fetch(fetchRequest)
+//        } catch {
+//            XCTFail(error.localizedDescription)
+//            return []
+//        }
+//    }
+    
+//    func testAddPerson() {
+//    do {
+//        let person = try Person.add(to: context, firstName: "Hello", lastName: "World")
+//        let results = items;
+//        XCTAssertFalse(results.isEmpty)
+//        if results?.isEmpty {
+//            return
+//        }
+//        XCTAssertEqualj(person, results[0])
+//    }
+    
+//    func testDelete() {
+//        do {
+//            let person = try person.add(to: context, firstName: "Hello", lastname: "World")
+//            XCTAssertFalse(items.isEmpty)
+//            try Person.delete(in: context, items: items)
+//            XCTAssertTrue(items.isEmpty)
+//        } catch {
+//            
+//        }
+//    }
+    
 }

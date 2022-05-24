@@ -17,9 +17,12 @@ fileprivate let defaultImage = Image(systemName: "location.square")
 // Store Images so they are not downloaded each time. Checks this array if already existing.
 fileprivate var downloadedImages = [URL: Image]()
 
+// Store Sunrise/ Sunset so they are not downloaded each time. Checks this array if already existing.
+fileprivate var sunriseSunsetCache = [URL: SunriseSunset]()
+
 // Extends the existing Class Place from the CoreData database.
 extension Place {
-   
+    
     // Computed property from title in CoreData
     var placeTitle: String {
         // Sets optional properties to non-optional
@@ -58,6 +61,18 @@ extension Place {
         get { longitude }
         // Store new value
         set { longitude = newValue}
+    }
+    
+    // sunrise
+     var placeSunrise: String {
+         get { sunrise ?? ""}
+         set { sunrise = newValue }
+     }
+    
+    //sunset
+    var placeSunset: String {
+        get { sunset ?? "" }
+        set { sunset = newValue}
     }
     
     // Create a default region to pass to State Binding in MapView
@@ -116,6 +131,80 @@ extension Place {
         return image
     }
     
+    // similar to image.
+    // create sunset cache array
+    // decode & encode
+    func getSunDataAndDownload(url: String) async -> SunriseSunset {
+        // create an array e.g. cache: [string: value] = [:]
+        // Try convert string to URL, else return default
+        // check if in cache and if we have data already
+        guard let url = URL(string: placeUrl) else {
+            print("Malformed string: ", placeUrl)
+            return SunriseSunset(sunrise: "", sunset: "") }
+        // If image already exists, find as association in array
+        // check if in cache array
+        if let sunData = sunriseSunsetCache[url] { return sunData }
+    
+        // downloading the data
+        let request = URLRequest(url: url)
+        let session = URLSession(configuration: .default)
+        
+        guard let jsonData = try? await session.data(for: request, delegate: nil)
+        else {
+            print("Could not look up Sunrise/ Sunset. ")
+            return SunriseSunset(sunrise: "", sunset: "")
+        }
+        
+        guard let api = try? JSONDecoder().decode(SunriseSunsetAPI.self, from: jsonData.0) else {
+            print("Could not decode JSON API:\n\(String(data: jsonData.0, encoding: .utf8) ?? "<empty>")")
+            return SunriseSunset(sunrise: "", sunset: "")
+        }
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateStyle = .none
+        inputFormatter.timeStyle = .medium
+        inputFormatter.timeZone = .init(secondsFromGMT: 0)
+        let outputFormatter = DateFormatter()
+        outputFormatter.dateStyle = .none
+        outputFormatter.timeStyle = .medium
+        outputFormatter.timeZone = .current
+        var converted = api.results
+        if let time = inputFormatter.date(from: api.results.sunrise) {
+            converted.sunrise = outputFormatter.string(from: time)
+        }
+        if let time = inputFormatter.date(from: api.results.sunset) {
+            converted.sunset = outputFormatter.string(from: time)
+        }
+        placeSunrise = converted.sunrise
+        placeSunset = converted.sunset
+        
+        // Add the image to the downloaded images cache.
+        print(converted, "the convert")
+        sunriseSunsetCache[url] = converted
+        return converted
+    }
+        
+//        let data: Data {
+//            do {
+//                 (data, _) = try await session.data(for: request, delegate: nil)
+//            } catch {
+//                print(error.localizedDescription)
+//            } return ""
+//
+//            // convert the data
+//            guard let str = String(Data: data, encoding: .utf8) else {
+//                return ""
+//            } return ""
+//        }
+       
+        
+        // after a text field
+        // on view add .task as closure with await viewmodel.getsunanddownload
+        // .task needs to be bound to a conditional render so it can redraw
+        // .onChange(of: url) { _ in
+        // text field content = nil
+        // make sure view model uses url if redrawing based on url
+    
+        
     @discardableResult
     // Save function that uses the managed object context of the class Place. Saves to context. Return boolean
     ///         Parameters: None
@@ -132,6 +221,10 @@ extension Place {
         }
         return true
     }
+    
+    // add in addPlace function
+    // use discardable results
+//    func addPlace(to context: context)
 }
 
 

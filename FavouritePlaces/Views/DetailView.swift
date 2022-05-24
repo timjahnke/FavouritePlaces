@@ -50,6 +50,21 @@ struct DetailView: View {
                         Spacer()
                     }
                 }
+                
+                // Sunrise / Sunset display
+                VStack{
+                    HStack {
+                        Text("Sunrise: ")
+    //                    Text(place.placeSunrise)
+                        Text("the time")
+                    }
+                    HStack {
+                        Text("Sunset: ")
+    //                    Text(place.placeSunrise)
+                        Text("the time")
+                    }
+                }
+                
             }
             // Create a toolbar edit button trailing.
             .toolbar {
