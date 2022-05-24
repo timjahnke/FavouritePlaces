@@ -53,17 +53,20 @@ struct DetailView: View {
                 
                 // Sunrise / Sunset display
                 VStack{
+                    Button("Look up sunrise and sunset") {
+                            place.getSunDataAndDownload()
+                    }
                     HStack {
                         Text("Sunrise: ")
-    //                    Text(place.placeSunrise)
-                        Text("the time")
+                        Label(place.placeSunrise, systemImage: "sunrise")
+//                        Text("the time")
                     }
                     HStack {
                         Text("Sunset: ")
-    //                    Text(place.placeSunrise)
-                        Text("the time")
+                      Label(place.placeSunset,  systemImage: "sunset")
+//                        Text("the time")
                     }
-                }
+                }.padding()
                 
             }
             // Create a toolbar edit button trailing.

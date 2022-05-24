@@ -134,30 +134,38 @@ extension Place {
     // similar to image.
     // create sunset cache array
     // decode & encode
-    func getSunDataAndDownload(url: String) async -> SunriseSunset {
+    func getSunDataAndDownload() {
         // create an array e.g. cache: [string: value] = [:]
         // Try convert string to URL, else return default
         // check if in cache and if we have data already
-        guard let url = URL(string: placeUrl) else {
+        
+        let urlString = "https://api.sunrise-sunset.org/json?lat=\(placeLatitude)&lng=\(placeLongitude)"
+        
+        guard let url = URL(string: urlString) else {
             print("Malformed string: ", placeUrl)
-            return SunriseSunset(sunrise: "", sunset: "") }
+            return }
         // If image already exists, find as association in array
         // check if in cache array
-        if let sunData = sunriseSunsetCache[url] { return sunData }
+        if sunriseSunsetCache[url] != nil { return }
     
         // downloading the data
-        let request = URLRequest(url: url)
-        let session = URLSession(configuration: .default)
+//        let request = URLRequest(url: url)
+//        let session = URLSession(configuration: .default)
         
-        guard let jsonData = try? await session.data(for: request, delegate: nil)
-        else {
-            print("Could not look up Sunrise/ Sunset. ")
-            return SunriseSunset(sunrise: "", sunset: "")
+//        guard let jsonData = try? await session.data(for: request, delegate: nil)
+//        else {
+//            print("Could not look up Sunrise/ Sunset. ")
+//            return SunriseSunset(sunrise: "", sunset: "")
+//        }
+        
+        guard let jsonData = try? Data(contentsOf: url) else {
+            print("Could not look up sunrise or sunset")
+            return
         }
         
-        guard let api = try? JSONDecoder().decode(SunriseSunsetAPI.self, from: jsonData.0) else {
-            print("Could not decode JSON API:\n\(String(data: jsonData.0, encoding: .utf8) ?? "<empty>")")
-            return SunriseSunset(sunrise: "", sunset: "")
+        guard let api = try? JSONDecoder().decode(SunriseSunsetAPI.self, from: jsonData) else {
+            print("Could not decode JSON API:\n\(String(data: jsonData, encoding: .utf8) ?? "<empty>")")
+            return
         }
         let inputFormatter = DateFormatter()
         inputFormatter.dateStyle = .none
@@ -178,9 +186,8 @@ extension Place {
         placeSunset = converted.sunset
         
         // Add the image to the downloaded images cache.
-        print(converted, "the convert")
+//        print(converted, "the convert")
         sunriseSunsetCache[url] = converted
-        return converted
     }
         
 //        let data: Data {
