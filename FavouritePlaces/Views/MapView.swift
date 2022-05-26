@@ -66,7 +66,10 @@ struct MapView: View {
             VStack {
                 // Horizontal layout for displaying coordinates from a name.
                 HStack {
-                    TextField("Enter a name to find coordinates for", text: $place.placeTitle) {
+                    Image(systemName: "text.magnifyingglass")
+                    Text("Place: ")
+                    Spacer()
+                    TextField("Find coordinates for place", text: $place.placeTitle) {
                         place.lookupCoordinates(for: place.placeTitle)
                     }
                 }
