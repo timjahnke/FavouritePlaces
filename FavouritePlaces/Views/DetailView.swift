@@ -44,10 +44,10 @@ struct DetailView: View {
                 // Display Navigation Link to MapView Page with a small map and text as a label.
                 NavigationLink(destination: MapView(region: place.region, place: place)){
                     // Vertical stack of text along with a small map that is the same as the navigation destination's map.
-                    VStack {
-                        Text("Map of \(place.placeTitle)")
+                    HStack {
                         Map(coordinateRegion: $place.region).aspectRatio(contentMode: .fit).frame(width: 100, height: 100)
                         Spacer()
+                        Text("Map of \(place.placeTitle)")
                     }
                 }
                 
@@ -58,13 +58,15 @@ struct DetailView: View {
                             place.getSunDataAndDownload()
                     }
                     HStack {
+                        Image(systemName: "sunrise")
                         Text("Sunrise: ")
-                        Label(place.placeSunrise, systemImage: "sunrise")
+                        Text(place.placeSunrise)
 //                        Text("the time")
                     }
                     HStack {
+                        Image(systemName: "sunset")
                         Text("Sunset: ")
-                      Label(place.placeSunset,  systemImage: "sunset")
+                        Text(place.placeSunset)
 //                        Text("the time")
                     }
                 }.padding()
