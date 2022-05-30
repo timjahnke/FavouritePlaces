@@ -11,6 +11,7 @@
 		BF4848AE282F813900466DEE /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4848AD282F813900466DEE /* MapView.swift */; };
 		BF4848B0282F8BF600466DEE /* CoordinateRegionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4848AF282F8BF600466DEE /* CoordinateRegionViewModel.swift */; };
 		BF51DBFE283C3CF5005D3A72 /* SunriseSunset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF51DBFD283C3CF5005D3A72 /* SunriseSunset.swift */; };
+		BF7883A328458B1700AAE737 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7883A228458B1700AAE737 /* MapViewModel.swift */; };
 		BFA58F782835E5200017AB0E /* PlaceViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA58F772835E51F0017AB0E /* PlaceViewModelTests.swift */; };
 		BFA996D22820B8B000C7378E /* MasterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA996D12820B8B000C7378E /* MasterView.swift */; };
 		BFA996D42820B8BA00C7378E /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA996D32820B8BA00C7378E /* DetailView.swift */; };
@@ -48,6 +49,7 @@
 		BF4848AD282F813900466DEE /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		BF4848AF282F8BF600466DEE /* CoordinateRegionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateRegionViewModel.swift; sourceTree = "<group>"; };
 		BF51DBFD283C3CF5005D3A72 /* SunriseSunset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunriseSunset.swift; sourceTree = "<group>"; };
+		BF7883A228458B1700AAE737 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		BFA58F772835E51F0017AB0E /* PlaceViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceViewModelTests.swift; sourceTree = "<group>"; };
 		BFA996D12820B8B000C7378E /* MasterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterView.swift; sourceTree = "<group>"; };
 		BFA996D32820B8BA00C7378E /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				BFA996D9282339BE00C7378E /* PlaceViewModel.swift */,
 				BF4848AF282F8BF600466DEE /* CoordinateRegionViewModel.swift */,
 				BF51DBFD283C3CF5005D3A72 /* SunriseSunset.swift */,
+				BF7883A228458B1700AAE737 /* MapViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -334,6 +337,7 @@
 				BF51DBFE283C3CF5005D3A72 /* SunriseSunset.swift in Sources */,
 				BF4848AE282F813900466DEE /* MapView.swift in Sources */,
 				BF234507282C57CC00C8971E /* StaticURLs.swift in Sources */,
+				BF7883A328458B1700AAE737 /* MapViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

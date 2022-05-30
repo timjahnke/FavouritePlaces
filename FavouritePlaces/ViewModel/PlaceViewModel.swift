@@ -70,10 +70,19 @@ extension Place {
          set { sunrise = newValue }
      }
     
+    // Function to create a region using Latitude and Longitude metres.
+    ///     Parameters:
+    ///     centerLatitude: Float , centerLongitude: Float
+    ///     Returns an MKCoordinateRegion()
+    func createCoordinates(centerLatitude: CLLocationDegrees, centerLongitude: CLLocationDegrees) -> MKCoordinateRegion {
+        // Returns an MKCoordinate region using parameters with a default latitude/longitude metres of 5000
+        return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: centerLatitude, longitude: centerLongitude), latitudinalMeters: 5000, longitudinalMeters: 5000)
+    }
+    
     // Create a default region to pass to State Binding in MapView
     var region: MKCoordinateRegion {
         get {
-            // Use Function below for creating computed region using computed coordinates 
+            // Use Function below for creating computed region using computed coordinates
             createCoordinates(centerLatitude: placeLatitude, centerLongitude: placeLongitude)
         }
         set {
@@ -107,14 +116,6 @@ extension Place {
         set { name = newValue }
     }
     
-    // Function to create a region using Latitude and Longitude metres.
-    ///     Parameters:
-    ///     centerLatitude: Float , centerLongitude: Float
-    ///     Returns an MKCoordinateRegion()
-    func createCoordinates(centerLatitude: CLLocationDegrees, centerLongitude: CLLocationDegrees) -> MKCoordinateRegion {
-        // Returns an MKCoordinate region using parameters with a default latitude/longitude metres of 5000
-        return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: centerLatitude, longitude: centerLongitude), latitudinalMeters: 5000, longitudinalMeters: 5000)
-    }
     
     // Function to get images from a web URL
     ///         Parameters: None
@@ -136,6 +137,39 @@ extension Place {
         downloadedImages[url] = image
         // Return the image
         return image
+    }
+    
+    // async version of getting sun data
+    func download() async -> SunriseSunset? {
+        print("Downloading...")
+        let urlString = "https://api.sunrise-sunset.org/json?lat=\(placeLatitude)&lng=\(placeLongitude)"
+        
+        guard let url = URL(string: urlString) else {
+            print("Malformed string: ", placeUrl)
+            return nil }
+        
+        // If image already exists, find as association in array
+        // check if in cache array
+        if sunriseSunsetCache[url] != nil { return nil }
+        
+        // downloading the data
+        let request = URLRequest(url: url)
+        let session = URLSession(configuration: .default)
+        
+        guard let (jsonData, _) = try? await session.data(for: request, delegate: nil)
+        else {
+            print("Could not look up Sunrise/ Sunset. ")
+            return nil
+        }
+        
+        guard let api = try? JSONDecoder().decode(SunriseSunsetAPI.self, from: jsonData) else {
+            print("Could not decode JSON API:\n\(String(data: jsonData, encoding: .utf8) ?? "<empty>")")
+            return nil
+        }
+        
+        print(api)
+        return api.results.converted(from: .init(secondsFromGMT: 0), to: .current)
+        // call the sunrise sunset convert function
     }
     
     func getSunDataAndDownload() {
@@ -171,10 +205,13 @@ extension Place {
             print("Could not decode JSON API:\n\(String(data: jsonData, encoding: .utf8) ?? "<empty>")")
             return
         }
+        // input formatter in utc time
         let inputFormatter = DateFormatter()
         inputFormatter.dateStyle = .none
         inputFormatter.timeStyle = .medium
         inputFormatter.timeZone = .init(secondsFromGMT: 0)
+        
+        // output formatter is current timezone
         let outputFormatter = DateFormatter()
         outputFormatter.dateStyle = .none
         outputFormatter.timeStyle = .medium
@@ -192,20 +229,6 @@ extension Place {
         // Add the image to the downloaded images cache.
         sunriseSunsetCache[url] = converted
     }
-        
-//        let data: Data {
-//            do {
-//                 (data, _) = try await session.data(for: request, delegate: nil)
-//            } catch {
-//                print(error.localizedDescription)
-//            } return ""
-//
-//            // convert the data
-//            guard let str = String(Data: data, encoding: .utf8) else {
-//                return ""
-//            } return ""
-//        }
-       
         
         // after a text field
         // on view add .task as closure with await viewmodel.getsunanddownload
@@ -235,60 +258,6 @@ extension Place {
     // add in addPlace function
     // use discardable results
 //    func addPlace(to context: context)
-    
-    // Look up coordinates from a name
-    func lookupCoordinates(for place: String) {
-        let coder = CLGeocoder()
-        coder.geocodeAddressString(place) { optionalPlacemarks, optionalError in
-            if let error = optionalError {
-                print("Error looking up \(place): \(error.localizedDescription)")
-                return
-            }
-            guard let placemarks = optionalPlacemarks, !placemarks.isEmpty else {
-                print("Placemarks came back empty")
-                return
-            }
-            let placemark = placemarks[0]
-            guard let location = placemark.location else {
-                print("Placemark has no location")
-                return
-            }
-            self.latitude = location.coordinate.latitude
-            self.longitude = location.coordinate.longitude
-            
-        }
-    }
-    
-    // Look up a name from coordinates
-    func lookupName(for location: CLLocation) {
-        let coder = CLGeocoder()
-        coder.reverseGeocodeLocation(location) { optionalPlacemarks, optionalError in
-            if let error = optionalError {
-                print("Error looking up \(location.coordinate): \(error.localizedDescription)")
-                return
-            }
-            guard let placemarks = optionalPlacemarks, !placemarks.isEmpty else {
-                print("Placemarks came back empty")
-                return
-            }
-            let placemark = placemarks[0]
-            for value in [
-                \CLPlacemark.name,
-                \.country,
-                \.isoCountryCode,
-                \.postalCode,
-                \.administrativeArea,
-                \.subAdministrativeArea,
-                \.locality,
-                \.subLocality,
-                \.thoroughfare,
-                \.subThoroughfare
-            ] {
-                print(String(describing: placemark[keyPath: value]))
-            }
-            self.placeName = placemark.subAdministrativeArea ?? placemark.locality ?? placemark.subLocality ?? placemark.name ?? placemark.thoroughfare ?? placemark.subThoroughfare ?? placemark.country ?? ""
-        }
-    }
     
 }
 

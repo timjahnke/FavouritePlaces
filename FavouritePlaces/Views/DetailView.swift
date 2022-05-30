@@ -13,8 +13,11 @@ struct DetailView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.editMode) var editMode
     
+    @State var data: SunriseSunset? = nil
+    
     // Observe the Class Place from CoreData
     @ObservedObject var place: Place
+//    @ObservedObject var viewModel: MapViewModel
     
     var body: some View {
         // If Edit Mode is not active, create a list and render plain text and map with Class Place data
@@ -42,7 +45,7 @@ struct DetailView: View {
                 }
                 
                 // Display Navigation Link to MapView Page with a small map and text as a label.
-                NavigationLink(destination: MapView(region: place.region, place: place)){
+                NavigationLink(destination: MapView(viewModel: MapViewModel(place: place))){
                     // Vertical stack of text along with a small map that is the same as the navigation destination's map.
                     HStack {
                         Map(coordinateRegion: $place.region).aspectRatio(contentMode: .fit).frame(width: 100, height: 100)
@@ -51,26 +54,41 @@ struct DetailView: View {
                     }
                 }
                 
-                //Fix this. Needs to redraw automatically instead of on button click.
+                //Redraws automatically instead of on button click.
                 // Sunrise / Sunset display
                 VStack{
                     Button("Look up sunrise and sunset") {
                             place.getSunDataAndDownload()
+                    }.task {
+                        if data == nil {
+                            data = await place.download()
+                        }
                     }
                     HStack {
                         Image(systemName: "sunrise")
                         Text("Sunrise: ")
-                        Text(place.placeSunrise)
-//                        Text("the time")
+                        // Show sunrise data
+                        if let data = data {
+                            /// Accessing sunrise data through struct function
+                            Text(data.sunrise)
+                        // Else show progress wheel
+                        } else {
+                            ProgressView()
+                        }
                     }
                     HStack {
                         Image(systemName: "sunset")
                         Text("Sunset: ")
-                        Text(place.placeSunset)
-//                        Text("the time")
+                        // Show sunset data
+                        if let data = data {
+                            /// Accessing sunset data through struct function
+                            Text(data.sunset)
+                        // Else show progress wheel
+                        } else {
+                            ProgressView()
+                        }
                     }
                 }.padding()
-                
             }
             // Create a toolbar edit button trailing.
             .toolbar {
