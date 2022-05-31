@@ -54,20 +54,26 @@ struct DetailView: View {
                     }
                 }
                 
-                //Redraws automatically instead of on button click.
+                //Redraws automatically instead of on button click using asynchronous call.
+                // Checks if data state is nil. 
                 // Sunrise / Sunset display
                 VStack{
                     Button("Look up sunrise and sunset") {
-                            place.getSunDataAndDownload()
+                        // Synchronous version to trigger on Button Click.
+                        // place.getSunDataAndDownload()
+                        // Create a task to handle Asynchronous function call.
                     }.task {
+                        // If asynchronous function has not been called, data will be nil.
                         if data == nil {
                             data = await place.download()
                         }
                     }
+                    // Horizontal layout for Sunrise Data.
                     HStack {
+                        // System image of Sunrise.
                         Image(systemName: "sunrise")
+                        // Show heading & sunrise data.
                         Text("Sunrise: ")
-                        // Show sunrise data
                         if let data = data {
                             /// Accessing sunrise data through struct function
                             Text(data.sunrise)
@@ -76,10 +82,12 @@ struct DetailView: View {
                             ProgressView()
                         }
                     }
+                    // Horizontal layout for Sunset Data.
                     HStack {
+                        // System image of Sunset.
                         Image(systemName: "sunset")
+                        // Show heading & sunset data.
                         Text("Sunset: ")
-                        // Show sunset data
                         if let data = data {
                             /// Accessing sunset data through struct function
                             Text(data.sunset)

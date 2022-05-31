@@ -26,7 +26,7 @@ extension Place {
     
     // Computed property from title in CoreData
     var placeTitle: String {
-        // Sets optional properties to non-optional
+        // Sets optional properties to non-optional. Perform nil-coalescing. Nil will be an empty string.
         get { title ?? "" }
         // Store new value
         set { title = newValue}
@@ -34,7 +34,7 @@ extension Place {
     
     // Computed property from details in CoreData
     var placeDetails: String {
-        // Sets optional properties to non-optional
+        // Sets optional properties to non-optional. Perform nil-coalescing. Nil will be an empty string.
         get { details ?? "" }
         // Store new value
         set { details = newValue}
@@ -42,7 +42,7 @@ extension Place {
     
     // Computed property from details in CoreData
     var placeUrl: String {
-        // Sets optional properties to non-optional
+        // Sets optional properties to non-optional. Perform nil-coalescing. Nil will be an empty string.
         get { url ?? "" }
         // Store new value
         set { url = newValue}
@@ -50,7 +50,7 @@ extension Place {
     
     // Computed property from latitude in CoreData
     var placeLatitude: Double {
-        // Sets optional properties to non-optional
+        // Gets the latitude from CoreData.
         get { latitude }
         // Store new value
         set { latitude = newValue} 
@@ -58,17 +58,11 @@ extension Place {
     
     // Computed property from longitude in CoreData
     var placeLongitude: Double {
-        // Sets optional properties to non-optional
+        // Gets the longitude from CoreData.
         get { longitude }
         // Store new value
         set { longitude = newValue}
     }
-    
-    // sunrise
-     var placeSunrise: String {
-         get { sunrise ?? ""}
-         set { sunrise = newValue }
-     }
     
     // Function to create a region using Latitude and Longitude metres.
     ///     Parameters:
@@ -100,19 +94,32 @@ extension Place {
             // Formatter allows floats and decimals
             numFormat.allowsFloats = true
             numFormat.numberStyle = .decimal
+            // Return the Number Format
             return numFormat
         }
     }
     
-    //sunset
+    // Computed variable for sunrise in CoreData
+     var placeSunrise: String {
+         // Sets optional properties to non-optional. Perform nil-coalescing. Nil will be an empty string.
+         get { sunrise ?? ""}
+         // Stores the new value.
+         set { sunrise = newValue }
+     }
+    
+    // Computed variable for sunset in CoreData
     var placeSunset: String {
+        // Sets optional properties to non-optional. Perform nil-coalescing. Nil will be an empty string.
         get { sunset ?? "" }
+        // Stores the new value.
         set { sunset = newValue}
     }
     
-    // for coordinate or name lookup
+    // Computed variable for name in CoreData
     var placeName: String {
+        // Sets optional properties to non-optional. Perform nil-coalescing. Nil will be an empty string.
         get { name ?? "" }
+        // Stores the new value.
         set { name = newValue }
     }
     
@@ -139,39 +146,50 @@ extension Place {
         return image
     }
     
-    // async version of getting sun data
+    // Asynchronous function for request of Sun Data
+    /// Parameters: None
+    /// Return: Struct SunriseSunset or Nil
     func download() async -> SunriseSunset? {
-        print("Downloading...")
+        // Create a dynamic URL string that uses Place computed coordinates.
         let urlString = "https://api.sunrise-sunset.org/json?lat=\(placeLatitude)&lng=\(placeLongitude)"
         
-        guard let url = URL(string: urlString) else {
+        // Check if it is a valid URL for the API.
+        guard let url = URL(string: urlString)
+        // Else print a URL error and Return Nil.
+        else {
             print("Malformed string: ", placeUrl)
             return nil }
         
-        // If image already exists, find as association in array
-        // check if in cache array
+        // If url already exists, find as association in array
+        // Check if url exists in url cache array
         if sunriseSunsetCache[url] != nil { return nil }
         
-        // downloading the data
+        // Request download of the data
         let request = URLRequest(url: url)
+        
+        // Coordinates network data tasks. Default configuration.
         let session = URLSession(configuration: .default)
         
+        // Check for destructured elements in results from session. 
         guard let (jsonData, _) = try? await session.data(for: request, delegate: nil)
+        // Else print an error message and Return nil.
         else {
             print("Could not look up Sunrise/ Sunset. ")
             return nil
         }
         
-        guard let api = try? JSONDecoder().decode(SunriseSunsetAPI.self, from: jsonData) else {
+        // Check if JSON data is decodable
+        guard let api = try? JSONDecoder().decode(SunriseSunsetAPI.self, from: jsonData)
+        // Else print decoding error and Return Nil.
+        else {
             print("Could not decode JSON API:\n\(String(data: jsonData, encoding: .utf8) ?? "<empty>")")
             return nil
         }
-        
-        print(api)
+        // Convert the API results time to current time zone. Return the API results.
         return api.results.converted(from: .init(secondsFromGMT: 0), to: .current)
-        // call the sunrise sunset convert function
     }
     
+    // Synchronous function for request of Sun Data
     func getSunDataAndDownload() {
         // create an array e.g. cache: [string: value] = [:]
         // Try convert string to URL, else return default

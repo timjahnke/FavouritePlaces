@@ -171,8 +171,8 @@ class MapViewModel: ObservableObject {
 //                print(String(describing: placemark[keyPath: value]))
 //            }
             
-            // Order of precedence of the place name to be stored from placemark.
-            // Last result is an empty string.
+            // Order of precedence for nil-coalescing placemark attributes.
+            // Place name stores result of placemark attributes nil-coalescing. 
             self.place.placeName = placemark.subAdministrativeArea ?? placemark.locality ?? placemark.subLocality ?? placemark.name ?? placemark.thoroughfare ?? placemark.subThoroughfare ?? placemark.country ?? ""
         }
     }
