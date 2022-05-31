@@ -116,8 +116,10 @@ struct MapView: View {
                     }
                 }
             }
+            // on change view model latitude equals new value
         }.onChange(of: viewModel.latitude) {
             viewModel.region.center.latitude = $0
+            // on change view model longitude equals new value
         }.onChange(of: viewModel.longitude) {
             viewModel.region.center.longitude = $0
         }
