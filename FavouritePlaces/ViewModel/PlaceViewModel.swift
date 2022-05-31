@@ -12,6 +12,10 @@ import UIKit
 import SwiftUI
 import MapKit
 
+
+// Called Persistence controller to create View Context for using functions for adding/ deleting from context.
+private var viewContext = PersistenceController().container.viewContext
+
 // Default Image that is passed into getImage() function
 fileprivate let defaultImage = Image(systemName: "location.square")
 
@@ -275,11 +279,6 @@ extension Place {
         }
         return true
     }
-    
-    // add in addPlace function
-    // use discardable results
-//    func addPlace(to context: context)
-    
 }
 
 
