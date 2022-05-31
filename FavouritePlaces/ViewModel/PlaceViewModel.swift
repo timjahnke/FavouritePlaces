@@ -186,76 +186,79 @@ extension Place {
             return nil
         }
         // Convert the API results time to current time zone. Return the API results.
-        return api.results.converted(from: .init(secondsFromGMT: 0), to: .current)
+        let converted = api.results.converted(from: .init(secondsFromGMT: 0), to: .current)
+        
+        // Add the data to the downloaded data cache.
+        sunriseSunsetCache[url] = converted
+        return converted
     }
     
     // Synchronous function for request of Sun Data
     func getSunDataAndDownload() {
-        // create an array e.g. cache: [string: value] = [:]
-        // Try convert string to URL, else return default
-        // check if in cache and if we have data already
-        
+        // Create a dynamic URL string that uses Place computed coordinates.
         let urlString = "https://api.sunrise-sunset.org/json?lat=\(placeLatitude)&lng=\(placeLongitude)"
         
-        guard let url = URL(string: urlString) else {
+        // Check if it is a valid URL for the API.
+        guard let url = URL(string: urlString)
+        // Else print a URL error and Return Nil.
+        else {
             print("Malformed string: ", placeUrl)
             return }
-        // If image already exists, find as association in array
-        // check if in cache array
+        
+        // If url already exists, find as association in array
+        // Check if url exists in url cache array
         if sunriseSunsetCache[url] != nil { return }
     
-        // downloading the data
-//        let request = URLRequest(url: url)
-//        let session = URLSession(configuration: .default)
-        
-//        guard let jsonData = try? await session.data(for: request, delegate: nil)
-//        else {
-//            print("Could not look up Sunrise/ Sunset. ")
-//            return SunriseSunset(sunrise: "", sunset: "")
-//        }
-        
+        // Handle synchronous download of JSON data.
         guard let jsonData = try? Data(contentsOf: url) else {
             print("Could not look up sunrise or sunset")
             return
         }
         
-        guard let api = try? JSONDecoder().decode(SunriseSunsetAPI.self, from: jsonData) else {
+        // Check if JSON data is decodable
+        guard let api = try? JSONDecoder().decode(SunriseSunsetAPI.self, from: jsonData)
+        // Else print decoding error and Return Nil.
+        else {
             print("Could not decode JSON API:\n\(String(data: jsonData, encoding: .utf8) ?? "<empty>")")
             return
         }
-        // input formatter in utc time
+        
+        // Create an Input Date formatter with no date styling.
         let inputFormatter = DateFormatter()
         inputFormatter.dateStyle = .none
+        
+        // Medium input format with UTC time.
         inputFormatter.timeStyle = .medium
         inputFormatter.timeZone = .init(secondsFromGMT: 0)
         
-        // output formatter is current timezone
+        // Create an Output Date formatter with no date styling.
         let outputFormatter = DateFormatter()
         outputFormatter.dateStyle = .none
+        
+        // Medium output format in current timezone.
         outputFormatter.timeStyle = .medium
         outputFormatter.timeZone = .current
+        
+        // Create variable for API results.
         var converted = api.results
+        
+        // Use input formatter to create time from api result for sunrise for output formatter.
         if let time = inputFormatter.date(from: api.results.sunrise) {
             converted.sunrise = outputFormatter.string(from: time)
         }
+        // Use input formatter to create time from api result for sunset for output formatter.
         if let time = inputFormatter.date(from: api.results.sunset) {
             converted.sunset = outputFormatter.string(from: time)
         }
+        // Store the converted API results.
         placeSunrise = converted.sunrise
         placeSunset = converted.sunset
         
-        // Add the image to the downloaded images cache.
+        // Add the data to the downloaded data cache.
         sunriseSunsetCache[url] = converted
     }
         
-        // after a text field
-        // on view add .task as closure with await viewmodel.getsunanddownload
-        // .task needs to be bound to a conditional render so it can redraw
-        // .onChange(of: url) { _ in
-        // text field content = nil
-        // make sure view model uses url if redrawing based on url
     
-        
     @discardableResult
     // Save function that uses the managed object context of the class Place. Saves to context. Return boolean
     ///         Parameters: None
