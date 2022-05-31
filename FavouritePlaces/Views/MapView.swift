@@ -11,16 +11,8 @@ import MapKit
 struct MapView: View {
     // Environment variable for editMode
     @Environment(\.editMode) var editMode
-    // State binding for allowing better control of redrawing map on updated values such as coordinates.
-//    @State var region: MKCoordinateRegion
-        // fix this
-    // look into debounce and store in the view model
-    // store region in view model
     
-    
-    // Observe Class & Extension Place for published changes.
-//    @ObservedObject var place: Place
-    
+    // Observed Class MapViewModel for published changes related to map region. Class Extension Place referenced within MapViewModel. 
     @ObservedObject var viewModel: MapViewModel
     
     // Create a view with a title and conditional render based on editMode state.
@@ -39,11 +31,13 @@ struct MapView: View {
                     // Also get map to fit to screen.
                     Map(coordinateRegion: $viewModel.region, interactionModes: .pan).aspectRatio(contentMode: .fit)
                         // When values change in the map such as when dragged/panned during interaction,
+                    
+                        // When View Model publisher receives changes
                         .onReceive(viewModel.publisher) { newValue in
-                            // Set computed values inside Class Extension of Place to region's current coordinates.
+                            // Set computed values inside Extension Place to View Model region's current coordinates.
                             viewModel.place.placeLatitude = viewModel.region.center.latitude
                             viewModel.place.placeLongitude = viewModel.region.center.longitude
-                            // Save to viewContext through Class Extension Place.
+                            // Save to viewContext through reference to Extension Place.
                             viewModel.place.save()
                         }
                     // Below the Map
@@ -67,17 +61,20 @@ struct MapView: View {
                     }
                 }
             }
-            // Fix this. Does not redraw on change with text field
             // When edit mode is active.
             if(editMode?.wrappedValue == .active) {
                 // Start a vertical layout
                 VStack {
                     // Horizontal layout for displaying coordinates from a name.
                     HStack {
+                        // Create system image of magnifying glass.
                         Image(systemName: "text.magnifyingglass")
+                        // Create heading, space and text field.
                         Text("Place: ")
                         Spacer()
                         TextField("Find coordinates for place", text: $viewModel.title) {
+                            // On commit, use geocoding function to find coordinates from Extension Place computed title.
+                            // Stores latitude/ longitude in Extension Place CoreData.
                             viewModel.lookupCoordinates(for: viewModel.place.placeTitle)
                         }
                     }
@@ -116,18 +113,12 @@ struct MapView: View {
                     }
                 }
             }
-            // on change view model latitude equals new value
+            // On change of View, view model latitude stores new value.
         }.onChange(of: viewModel.latitude) {
             viewModel.region.center.latitude = $0
-            // on change view model longitude equals new value
+            // On change of View, view model longitude stores new value.
         }.onChange(of: viewModel.longitude) {
             viewModel.region.center.longitude = $0
         }
     }
 }
-
-//struct MapView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MapView()
-//    }
-//}

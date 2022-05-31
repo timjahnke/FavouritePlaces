@@ -13,6 +13,7 @@ struct DetailView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.editMode) var editMode
     
+    // Binding for automatically rendering SunData asynchronously.
     @State var data: SunriseSunset? = nil
     
     // Observe the Class Place from CoreData
@@ -55,7 +56,7 @@ struct DetailView: View {
                 }
                 
                 //Redraws automatically instead of on button click using asynchronous call.
-                // Checks if data state is nil. 
+                // Checks if data state is nil.
                 // Sunrise / Sunset display
                 VStack{
                     Button("Look up sunrise and sunset") {
