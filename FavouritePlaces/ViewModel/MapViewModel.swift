@@ -8,8 +8,7 @@
 import Foundation
 import MapKit
 
-// Class MapViewModel
-// A class ViewModel created for the MapView. Is observable.
+// A class ViewModel created for the MapView. Observable.
 class MapViewModel: ObservableObject {
     
     // A published variable to observe the region used for the map.
@@ -48,6 +47,7 @@ class MapViewModel: ObservableObject {
         // Computed title equals the new value. Publish the changes.
         set {
             place.placeTitle = newValue
+            // Publish the changes.
             objectWillChange.send()
         }
     }
@@ -65,16 +65,16 @@ class MapViewModel: ObservableObject {
             else {
                 place.placeLatitude = 0.00
             }
-            // Publish the changes. 
+            // Publish the changes.
             objectWillChange.send()
         }
     }
     var longitude: Double {
-        // Get the computed longitude from Place
+        // Get the computed longitude from Extension Place
         get {
             place.placeLongitude
         } set {
-            // If the value is a valid latitude, store the new value
+            // If the value is a valid longitude, store the new value
             if(place.placeLongitude >= -180.00 && place.placeLongitude <= 180.00 ) {
                 place.placeLongitude = newValue
             }
@@ -82,59 +82,97 @@ class MapViewModel: ObservableObject {
             else {
                 place.placeLongitude = 0.00
             }
+            // Publish the changes.
             objectWillChange.send()
         }
     }
     
     // Look up coordinates from a name
+    /// Parameters: (place: String)
+    /// Return: None
     func lookupCoordinates(for place: String) {
+        // Constant the creates a geocoder for converting between geographic coordinates and place names.
         let coder = CLGeocoder()
+        
+        // Use the string parameter for geocoding name to coordinates.
         coder.geocodeAddressString(place) { optionalPlacemarks, optionalError in
+            
+            // Print an error if unable to find place & Return
             if let error = optionalError {
                 print("Error looking up \(place): \(error.localizedDescription)")
                 return
             }
+            
+            // Check if constant can equal optionalPlacemarks and the constant is not empty.
+            // Print an error if empty & Return.
             guard let placemarks = optionalPlacemarks, !placemarks.isEmpty else {
                 print("Placemarks came back empty")
                 return
             }
+            
+            // Get the first index of the placemarks results array.
+            // Only want the first result from geocoding.
             let placemark = placemarks[0]
+            
+            // Check if the placemark result has a location
             guard let location = placemark.location else {
+                // Print an error message if no location coordinates found & Return.
                 print("Placemark has no location")
                 return
             }
+            
+            // Store the location coordinates in the MapViewModel variables.
             self.latitude = location.coordinate.latitude
             self.longitude = location.coordinate.longitude
         }
     }
     
     // Look up a name from coordinates
+    /// Parameters: (location: CLLocation)
+    /// Return:  None
     func lookupName(for location: CLLocation) {
+        // Constant the creates a geocoder for converting between geographic coordinates and place names.
         let coder = CLGeocoder()
+        
+        // Use the CLLocation parameter for geocoding coordinates into a location name.
         coder.reverseGeocodeLocation(location) { optionalPlacemarks, optionalError in
+            
+            // Print an error if unable to find place from coordinates & Return
             if let error = optionalError {
                 print("Error looking up \(location.coordinate): \(error.localizedDescription)")
                 return
             }
+            
+            // Check if constant can equal optionalPlacemarks and the constant is not empty.
+            // Print an error if empty & Return.
             guard let placemarks = optionalPlacemarks, !placemarks.isEmpty else {
                 print("Placemarks came back empty")
                 return
             }
+            
+            // Get the first index of the placemarks results array.
+            // Only want the first result from geocoding.
             let placemark = placemarks[0]
-            for value in [
-                \CLPlacemark.name,
-                \.country,
-                \.isoCountryCode,
-                \.postalCode,
-                \.administrativeArea,
-                \.subAdministrativeArea,
-                \.locality,
-                \.subLocality,
-                \.thoroughfare,
-                \.subThoroughfare
-            ] {
-                print(String(describing: placemark[keyPath: value]))
-            }
+            
+            // Destructured array of keypaths from the placemark. Used for printing.
+//            for value in [
+//                \CLPlacemark.name,
+//                \.country,
+//                \.isoCountryCode,
+//                \.postalCode,
+//                \.administrativeArea,
+//                \.subAdministrativeArea,
+//                \.locality,
+//                \.subLocality,
+//                \.thoroughfare,
+//                \.subThoroughfare
+//            ] {
+                // For printing the results of geocoding
+//                print(String(describing: placemark[keyPath: value]))
+//            }
+            
+            // Order of precedence of the place name to be stored from placemark.
+            // Last result is an empty string.
             self.place.placeName = placemark.subAdministrativeArea ?? placemark.locality ?? placemark.subLocality ?? placemark.name ?? placemark.thoroughfare ?? placemark.subThoroughfare ?? placemark.country ?? ""
         }
     }
