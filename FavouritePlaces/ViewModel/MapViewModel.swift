@@ -87,7 +87,7 @@ class MapViewModel: ObservableObject {
         }
     }
     
-    // Look up coordinates from a name
+    /// Look up coordinates from a name.
     /// Parameters: (place: String)
     /// Return: None
     func lookupCoordinates(for place: String) {
@@ -127,7 +127,7 @@ class MapViewModel: ObservableObject {
         }
     }
     
-    // Look up a name from coordinates
+    /// Look up a name from coordinates.
     /// Parameters: (location: CLLocation)
     /// Return:  None
     func lookupName(for location: CLLocation) {
@@ -173,7 +173,7 @@ class MapViewModel: ObservableObject {
             
             // Order of precedence for nil-coalescing placemark attributes.
             // Place name stores result of placemark attributes nil-coalescing. 
-            self.place.placeName = placemark.subAdministrativeArea ?? placemark.locality ?? placemark.subLocality ?? placemark.name ?? placemark.thoroughfare ?? placemark.subThoroughfare ?? placemark.country ?? ""
+            self.place.placeTitle = placemark.subAdministrativeArea ?? placemark.locality ?? placemark.subLocality ?? placemark.name ?? placemark.thoroughfare ?? placemark.subThoroughfare ?? placemark.country ?? ""
         }
     }
 }

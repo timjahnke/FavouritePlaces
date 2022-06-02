@@ -19,7 +19,7 @@ struct MapView: View {
     var body: some View {
         VStack {
             // Title with black font of specified size in bold.
-            Text("Map of \(viewModel.place.placeTitle)")
+            Text("Map of \(viewModel.title)")
                 .foregroundColor(.black)
                 .font(.system(size: 30))
                 .fontWeight(.bold)
@@ -116,9 +116,11 @@ struct MapView: View {
             // On change of View, view model latitude stores new value.
         }.onChange(of: viewModel.latitude) {
             viewModel.region.center.latitude = $0
+            viewModel.lookupName(for: CLLocation(latitude:  viewModel.latitude, longitude: viewModel.longitude))
             // On change of View, view model longitude stores new value.
         }.onChange(of: viewModel.longitude) {
             viewModel.region.center.longitude = $0
+            viewModel.lookupName(for: CLLocation(latitude:  viewModel.latitude, longitude: viewModel.longitude))
         }
     }
 }
