@@ -13,12 +13,11 @@ struct DetailView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.editMode) var editMode
     
-    // Binding for automatically rendering SunData asynchronously.
+    // Binding for automatically rendering SunData asynchronously. Value will either be sun data times or nil. 
     @State var data: SunriseSunset? = nil
     
     // Observe the Class Place from CoreData
     @ObservedObject var place: Place
-//    @ObservedObject var viewModel: MapViewModel
     
     var body: some View {
         // If Edit Mode is not active, create a list and render plain text and map with Class Place data
@@ -59,15 +58,10 @@ struct DetailView: View {
                 // Checks if data state is nil.
                 // Sunrise / Sunset display
                 VStack{
-                    Button("Look up sunrise and sunset") {
-                        // Synchronous version to trigger on Button Click.
-                        // place.getSunDataAndDownload()
-                        // Create a task to handle Asynchronous function call.
-                    }
                     // Horizontal layout for Sunrise Data.
                     HStack {
                         // System image of Sunrise.
-                        Image(systemName: "sunrise")
+                        Image(systemName: "sunrise").foregroundColor(.blue)
                         // Show heading & sunrise data.
                         Text("Sunrise: ")
                         if let data = data {
@@ -75,24 +69,14 @@ struct DetailView: View {
                             Text(data.sunrise)
                         // Else show progress wheel
                         } else {
-                            ProgressView().task {
-                                print("the task")
-                                // If asynchronous function has not been called, data will be nil.
-                                if data == nil {
-                                    print("inside ")
-                                    data = await place.download()
-                                    print("after")
-                                    print(data)
-                                    // create a cache
-                                    
-                                }
-                            }
+                            ProgressView()
                         }
                     }
+                    Spacer()
                     // Horizontal layout for Sunset Data.
                     HStack {
                         // System image of Sunset.
-                        Image(systemName: "sunset")
+                        Image(systemName: "sunset").foregroundColor(.blue)
                         // Show heading & sunset data.
                         Text("Sunset: ")
                         if let data = data {
@@ -103,7 +87,14 @@ struct DetailView: View {
                             ProgressView()
                         }
                     }
-                }.padding()
+                }.task {
+                    // If asynchronous function has not been called, data will be nil.
+                    // Data is for Sunrise/ Sunset times.
+                    if data == nil {
+                        data = await place.download()
+                    }
+                }
+                .padding()
             }
             // Create a toolbar edit button trailing.
             .toolbar {

@@ -35,7 +35,7 @@ struct MasterView: View {
                     }
                 }
             }
-            // Delete function below for deleting a list item using index set.
+            // Delete function below for deleting a list item using the index set.
             .onDelete { indexSet in
                 Place.delete(indexSet.map { places[$0] }, from: viewContext)
             }
@@ -46,6 +46,8 @@ struct MasterView: View {
             // Plus Button in Leading Position
             .navigationBarLeading) {
                 Button {
+                    // Add to existing places using convenience initialiser and view context.
+                    // Underscore to not declare a variable.
                   _ = Place(addingInto: viewContext)
                 } label: {
                     Label("Add Item", systemImage: "plus")

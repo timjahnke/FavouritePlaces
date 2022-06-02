@@ -13,9 +13,6 @@ import SwiftUI
 import MapKit
 
 
-// Default Image that is passed into getImage() function
-fileprivate let defaultImage = Image(systemName: "location.square")
-
 // Store Images so they are not downloaded each time. Checks this array if already existing.
 fileprivate var downloadedImages = [URL: Image]()
 
@@ -130,14 +127,17 @@ extension Place {
     ///         Returns an Image
     func getImage() -> Image {
         // Try convert string to URL, else return default
-        guard let url = URL(string: placeUrl) else { return defaultImage }
+        guard let url = URL(string: placeUrl)
+        // Return a default image 
+        else { return Image(systemName: "location.square") }
         // If image already exists, find as association in array
         if let image = downloadedImages[url] { return image }
         
         // Try get data from url to return a UIImage, else return default image.
         guard let data = try? Data(contentsOf: url),
-              let uiImg = UIImage(data: data) else { return
-            defaultImage }
+              let uiImg = UIImage(data: data)
+        // Return a default image.
+        else { return Image(systemName: "location.square")}
         
         // On successful data, create an Image with a uiImage.
         let image = Image(uiImage: uiImg).resizable()
@@ -194,76 +194,11 @@ extension Place {
         return converted
     }
     
-    // Synchronous function for request of Sun Data
-    func getSunDataAndDownload() {
-        // Create a dynamic URL string that uses Place computed coordinates.
-        let urlString = "https://api.sunrise-sunset.org/json?lat=\(placeLatitude)&lng=\(placeLongitude)"
-        
-        // Check if it is a valid URL for the API.
-        guard let url = URL(string: urlString)
-        // Else print a URL error and Return Nil.
-        else {
-            print("Malformed string: ", placeUrl)
-            return }
-        
-        // If url already exists, find as association in array
-        // Check if url exists in url cache array
-        if sunriseSunsetCache[url] != nil { return }
-    
-        // Handle synchronous download of JSON data.
-        guard let jsonData = try? Data(contentsOf: url) else {
-            print("Could not look up sunrise or sunset")
-            return
-        }
-        
-        // Check if JSON data is decodable
-        guard let api = try? JSONDecoder().decode(SunriseSunsetAPI.self, from: jsonData)
-        // Else print decoding error and Return Nil.
-        else {
-            print("Could not decode JSON API:\n\(String(data: jsonData, encoding: .utf8) ?? "<empty>")")
-            return
-        }
-        
-        // Create an Input Date formatter with no date styling.
-        let inputFormatter = DateFormatter()
-        inputFormatter.dateStyle = .none
-        
-        // Medium input format with UTC time.
-        inputFormatter.timeStyle = .medium
-        inputFormatter.timeZone = .init(secondsFromGMT: 0)
-        
-        // Create an Output Date formatter with no date styling.
-        let outputFormatter = DateFormatter()
-        outputFormatter.dateStyle = .none
-        
-        // Medium output format in current timezone.
-        outputFormatter.timeStyle = .medium
-        outputFormatter.timeZone = .current
-        
-        // Create variable for API results.
-        var converted = api.results
-        
-        // Use input formatter to create time from api result for sunrise for output formatter.
-        if let time = inputFormatter.date(from: api.results.sunrise) {
-            converted.sunrise = outputFormatter.string(from: time)
-        }
-        // Use input formatter to create time from api result for sunset for output formatter.
-        if let time = inputFormatter.date(from: api.results.sunset) {
-            converted.sunset = outputFormatter.string(from: time)
-        }
-        // Store the converted API results.
-        placeSunrise = converted.sunrise
-        placeSunset = converted.sunset
-        
-        // Add the data to the downloaded data cache.
-        sunriseSunsetCache[url] = converted
-    }
-        
-    
     @discardableResult
     // Save function that uses the managed object context of the class Place. Saves to context. Return boolean
     ///         Parameters: None
     ///         Returns a boolean based on if save was successful.
+    ///         Discardable results enables ignore of return value.
     func save() -> Bool {
         // Try save to managed object context
         do {
@@ -276,14 +211,14 @@ extension Place {
         }
         return true
     }
-    
-    
-    ///
-    ///
+   
     // To Add a new place to the list
+    // Convenience initialiser used to call default initialiser.
+    // Initialise context from NSManagedObjectContext.
     ///      Parameters: None
     ///      Return: None
     convenience init(addingInto context: NSManagedObjectContext) {
+        // Add context to initialiser.
         self.init(context: context)
         withAnimation {
             // Initialise default values to store in CoreData
@@ -300,13 +235,12 @@ extension Place {
     }
  
     // Delete places from the list.
-    ///     Parameters: Index Set
+    ///     Parameters: An array of Places, NSManagedObjectContext
     ///     return: None, Can throw a FatalError.
+    ///     Creating a static function to allow use without creating an instance first.
     static func delete(_ places: [Place], from context: NSManagedObjectContext) {
-        
         withAnimation {
-            // Return an array of retrieved places using the index set.
-            // For each element retrieved using the index set, Delete each NSObject from array at that index.
+            // For each element retrieved from the array of Places, Delete each NSObject from array at that index.
             places.forEach(context.delete)
             do {
                 // Attempt to save to view context otherwise throw an error
@@ -320,5 +254,3 @@ extension Place {
         }
     }
 }
-
-

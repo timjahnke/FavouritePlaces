@@ -31,7 +31,7 @@ class MapViewModel: ObservableObject {
     /// Return: None
     init(place: Place) {
         self.place = place
-        // Region is not declared as parameter as published variable for region declared above.
+        // Region is not declared as parameter as published variable for region declared above is used for a default value. 
         
         /// Creates a region using MKCoordinate region from computed variables in Extention Class Place. Sets a default span.
         /// On Mapview, placeLatitude & placeLongitude store most recent coordinates.
