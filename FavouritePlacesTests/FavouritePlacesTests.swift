@@ -33,12 +33,6 @@ class FavouritePlacesTests: XCTestCase {
         XCTAssertTrue(details.count > 0)
     }
     
-    // Check isFavourite boolean is true
-    func testItemIsChecked() {
-        let isFavourite = true
-        XCTAssertTrue(isFavourite)
-    }
-
     // Check title name is greater than 2 characters
     func testItemNameLength() {
         let title = "Brisbane"
@@ -60,38 +54,4 @@ class FavouritePlacesTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
-  
-    func testCreatePerson () {
-        // xct assert equal create class
-    }
-    
-//    func testIsCodable() {
-//        let person = Person(name: "hello")
-//        let encoder = JSONEncoder()
-//        let decoder = JSONDecoder()
-//        do {
-//            let data = try encoder.encode(person)
-//            let newPerson - try decoder.decode(Person.self, from: data)
-//            XCTAssertEqual(person, newPerson)
-//        } catch {
-//            XCTFail(error.localizedDescription)
-//        }
-//    }
-//    
-//    func testIsEquatable() {
-//        var person1 = Person(name: "hello")
-//        var person2 = Person(name: "goodbye")
-//        XCTAssertEqual(person1, person2)
-//        person1.name = "bonjour"
-//        XCTAssertNotEqual(person1, person2)
-//    }
-    
-//    func testIsHashable() {
-//        var set1: Set<Person> = Set()
-//        let person1 = Person(name: "hello")
-//        let person2 = Person(name: "hello")
-//        set1.insert(person1)
-//        XCTAssertTrue(set1.contains(person2))
-//    }
-
 }
