@@ -3,4 +3,54 @@
    uuid = "13575436-2980-4033-8ED3-A37AAE60F47A"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A2A94118-8056-48B2-A7DE-318F9FF4BEFA"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FavouritePlaces/Views/MapView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "A2A94118-8056-48B2-A7DE-318F9FF4BEFA - 556d41b260acef27"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FavouritePlaces.MapView.body.getter : some"
+                  moduleName = "FavouritePlaces"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/timjahnke/Documents/Assignment_2/FavouritePlaces/FavouritePlaces/Views/MapView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "331">
+               </Location>
+               <Location
+                  uuid = "A2A94118-8056-48B2-A7DE-318F9FF4BEFA - 645dfc65409d8e95"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.Text, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.toolbar&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.ToolbarContent&gt;(content: () -&gt; &#x3c4;_1_0) -&gt; some&gt;&gt;.0&gt;, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.toolbar&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.ToolbarContent&gt;(content: () -&gt; &#x3c4;_1_0) -&gt; some&gt;&gt;.0&gt;)&gt; in FavouritePlaces.MapView.body.getter : some"
+                  moduleName = "FavouritePlaces"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/timjahnke/Documents/Assignment_2/FavouritePlaces/FavouritePlaces/Views/MapView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "5740">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

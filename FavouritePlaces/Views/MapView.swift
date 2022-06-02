@@ -116,8 +116,11 @@ struct MapView: View {
             // On change of View, view model latitude stores new value.
         }.onChange(of: viewModel.latitude) {
             viewModel.region.center.latitude = $0
+            // Also perform lookup name from location if latitude changes in MapView VStack.
             viewModel.lookupName(for: CLLocation(latitude:  viewModel.latitude, longitude: viewModel.longitude))
+            
             // On change of View, view model longitude stores new value.
+            // Also lookup name from location if longitude changes in MapView VStack.
         }.onChange(of: viewModel.longitude) {
             viewModel.region.center.longitude = $0
             viewModel.lookupName(for: CLLocation(latitude:  viewModel.latitude, longitude: viewModel.longitude))
