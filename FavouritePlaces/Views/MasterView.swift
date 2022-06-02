@@ -36,7 +36,9 @@ struct MasterView: View {
                 }
             }
             // Delete function below for deleting a list item using index set.
-            .onDelete(perform: deletePlaces)
+            .onDelete { indexSet in
+                Place.delete(indexSet.map { places[$0] }, from: viewContext)
+            }
         }
         // Set a toolbar with a leading plus button and trailing edit button.
         .toolbar {
@@ -44,7 +46,7 @@ struct MasterView: View {
             // Plus Button in Leading Position
             .navigationBarLeading) {
                 Button {
-                  addPlace()
+                  _ = Place(addingInto: viewContext)
                 } label: {
                     Label("Add Item", systemImage: "plus")
                 }
@@ -55,47 +57,4 @@ struct MasterView: View {
             }
         }
     }
-    
-    
-     // To Add a new place to the list
-     ///      Parameters: None
-     ///      Return: None
-     private func addPlace() {
-         withAnimation {
-             // Add to environment variable view context with initial values
-             // Stores values in CoreData entity Place.
-             let newPlace = Place(context: viewContext)
-             // Initialise default values to store in CoreData
-             newPlace.id = UUID()
-             newPlace.timestamp = Date()
-             newPlace.title = "New Place"
-             newPlace.details = ""
-             newPlace.latitude = 0.0
-             newPlace.longitude = 0.0
-             newPlace.url = ""
-             // Attempt to save to view context using function inside ViewModel otherwise throw an error
-             newPlace.save()
-         }
-     }
-  
-     // Delete places from the list.
-     ///     Parameters: Index Set
-     ///     return: None, Can throw a FatalError.
-     func deletePlaces(offsets: IndexSet) {
-         
-         withAnimation {
-             // Return an array of retrieved places using the index set.
-             // For each element retrieved using the index set, Delete each NSObject from array at that index.
-             offsets.map { places[$0] }.forEach(viewContext.delete)
-             do {
-                 // Attempt to save to view context otherwise throw an error
-                 try viewContext.save()
-             } catch {
-                 // fatalError() causes the application to generate a crash log and terminate. For development purposes.
-                 let nsError = error as NSError
-                 // Return the error as a string with user information.
-                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-             }
-         }
-     }
 }

@@ -63,11 +63,6 @@ struct DetailView: View {
                         // Synchronous version to trigger on Button Click.
                         // place.getSunDataAndDownload()
                         // Create a task to handle Asynchronous function call.
-                    }.task {
-                        // If asynchronous function has not been called, data will be nil.
-                        if data == nil {
-                            data = await place.download()
-                        }
                     }
                     // Horizontal layout for Sunrise Data.
                     HStack {
@@ -80,7 +75,18 @@ struct DetailView: View {
                             Text(data.sunrise)
                         // Else show progress wheel
                         } else {
-                            ProgressView()
+                            ProgressView().task {
+                                print("the task")
+                                // If asynchronous function has not been called, data will be nil.
+                                if data == nil {
+                                    print("inside ")
+                                    data = await place.download()
+                                    print("after")
+                                    print(data)
+                                    // create a cache
+                                    
+                                }
+                            }
                         }
                     }
                     // Horizontal layout for Sunset Data.

@@ -18,19 +18,44 @@ class MapViewModelTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    func testCreateRegion() {
+        
+        // create initial values as doubles
+        let latitudeDouble = Double(-27.47)
+        let longitudeDouble = Double(153.02)
+        
+        // Create Coordinates using CLLocationDegrees from doubles
+        let latitudeDegrees = CLLocationDegrees(latitudeDouble)
+        let longitudeDegrees = CLLocationDegrees(longitudeDouble)
+    
+        // Create a CLLocation of both coordinates.
+        let location = CLLocationCoordinate2D(latitude: latitudeDegrees, longitude: longitudeDegrees)
+        
+        // Create identical regions to compare based on practice in Place ViewModel
+        let region1 = MKCoordinateRegion(center: location, latitudinalMeters: 5000, longitudinalMeters: 5000)
+        
+        let region2 = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: -27.4705, longitude: 153.0260), latitudinalMeters: 5000, longitudinalMeters: 5000)
+        
+        // Compare regions created from variables vs. statically. 
+        XCTAssertEqual(region1, region2)
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    // Check for valid latitude within specified range
+    func testLatitude() {
+        // Set initial value
+        let latitude = Double(10.00)
+            // If the value is a valid latitude, return true
+            XCTAssertTrue(latitude >= -90.00 && latitude <= 90.00 )
     }
+    
+    // Check for valid longitude within specified range
+    func testLongitude() {
+        // Set initial value
+        let longitude = Double(20.00)
+            // If the value is a valid latitude, return true
+        XCTAssertTrue(longitude >= -180.00 && longitude <= 180.00 )
+    }
+    
+    
 
 }

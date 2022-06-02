@@ -13,9 +13,6 @@ import SwiftUI
 import MapKit
 
 
-// Called Persistence controller to create View Context for using functions for adding/ deleting from context.
-private var viewContext = PersistenceController().container.viewContext
-
 // Default Image that is passed into getImage() function
 fileprivate let defaultImage = Image(systemName: "location.square")
 
@@ -166,7 +163,7 @@ extension Place {
         
         // If url already exists, find as association in array
         // Check if url exists in url cache array
-        if sunriseSunsetCache[url] != nil { return nil }
+        if let data = sunriseSunsetCache[url] { return data }
         
         // Request download of the data
         let request = URLRequest(url: url)
@@ -278,6 +275,49 @@ extension Place {
             return false
         }
         return true
+    }
+    
+    
+    ///
+    ///
+    // To Add a new place to the list
+    ///      Parameters: None
+    ///      Return: None
+    convenience init(addingInto context: NSManagedObjectContext) {
+        self.init(context: context)
+        withAnimation {
+            // Initialise default values to store in CoreData
+            self.id = UUID()
+            self.timestamp = Date()
+            self.title = "New Place"
+            self.details = ""
+            self.latitude = 0.0
+            self.longitude = 0.0
+            self.url = ""
+            // Attempt to save to view context using function inside ViewModel otherwise throw an error
+            self.save()
+        }
+    }
+ 
+    // Delete places from the list.
+    ///     Parameters: Index Set
+    ///     return: None, Can throw a FatalError.
+    static func delete(_ places: [Place], from context: NSManagedObjectContext) {
+        
+        withAnimation {
+            // Return an array of retrieved places using the index set.
+            // For each element retrieved using the index set, Delete each NSObject from array at that index.
+            places.forEach(context.delete)
+            do {
+                // Attempt to save to view context otherwise throw an error
+                try context.save()
+            } catch {
+                // fatalError() causes the application to generate a crash log and terminate. For development purposes.
+                let nsError = error as NSError
+                // Return the error as a string with user information.
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+        }
     }
 }
 
